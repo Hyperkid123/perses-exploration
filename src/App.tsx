@@ -9,6 +9,7 @@ import { PluginRegistry } from '@perses-dev/plugin-system';
 import { pluginLoader } from './perses/pluginLoader';
 import PersesGaugeChart from './components/GaugeChartWidget';
 import PersesHeatMapChart from './components/HeatMapChartWidget';
+import PersesHistogramChart from './components/HistogramChartWidget';
 
 function App() {
   const theme = usePatternFlyTheme();
@@ -50,6 +51,9 @@ function App() {
             </GridItem>
             <GridItem span={3}>
               <PersesHeatMapChart />
+            </GridItem>
+            <GridItem span={3}>
+              <PersesHistogramChart />
             </GridItem>
           </Grid>
         </div>
