@@ -24,8 +24,6 @@ import * as timeSeriesTablePlugin from '@perses-dev/timeseries-table-plugin';
 import * as traceTablePlugin from '@perses-dev/trace-table-plugin';
 import * as tracingGanttChartPlugin from '@perses-dev/tracing-gantt-chart-plugin';
 
-console.log({ flameChartPlugin, pieChartPlugin, fc: flameChartPlugin.getPluginModule(), bc: barchartPlugin.getPluginModule() });
-
 export const pluginLoader = dynamicImportPluginLoader([
   {
     resource: barchartPlugin.getPluginModule(),
@@ -41,6 +39,7 @@ export const pluginLoader = dynamicImportPluginLoader([
       Promise.resolve({
         ...flameChartPlugin,
         // need to resolve to the actual configuration
+        // There seems to be some import conflicts which lead to using wrong modules
         FlameChart,
       }),
   },

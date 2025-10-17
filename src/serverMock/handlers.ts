@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import pieChartResponse from './responses/pieChartResponse.json';
+import gaugeChartResponse from './responses/gaugeChartResponse.json';
 import profileQueryResponse from './responses/profileQueryResponse.json';
 
 export const handlers = [
@@ -11,12 +12,16 @@ export const handlers = [
       return HttpResponse.json(pieChartResponse);
     } else if (query === 'sum(rate(pyroscope_cpu_usage[5m])) by (app)') {
       return HttpResponse.json(profileQueryResponse);
+    } else if (query === 'avg(rate(node_cpu_seconds_total{mode!="idle"}[5m])) * 100') {
+      console.log('Returning gauge chart response');
+      return HttpResponse.json(gaugeChartResponse);
     }
 
     // fallback to time series query
     return HttpResponse.json(pieChartResponse);
   }),
-  http.get('*/prometheus/pyroscope/render', async ({ request }) => {
+  // Pyroscope plugin response for the flame chart
+  http.get('*/prometheus/pyroscope/render', async () => {
     // Mock Pyroscope searchProfiles API
     const mockPyroscopeResponse = {
       flamebearer: {

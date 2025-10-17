@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
-import { DEFAULT_PYROSCOPE } from '@perses-dev/pyroscope-plugin';
+import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
 import { Box, ListItem } from '@mui/material';
@@ -10,6 +10,7 @@ import { Content, List, Switch } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
+const query = 'avg(rate(node_cpu_seconds_total{mode!="idle"}[5m])) * 100';
 
 const useTimeRange = () => {
   const result = useMemo(() => {
@@ -28,23 +29,20 @@ const useTimeRange = () => {
 };
 
 const TimeSeries = () => {
-  const datasource = DEFAULT_PYROSCOPE;
+  const datasource = DEFAULT_PROM;
   const panelRef = useRef<HTMLDivElement>(null);
   const { width } = useResizeObserver({ ref: panelRef });
   const suggestedStepMs = useSuggestedStepMs(width);
 
   const definitions = [
     {
-      kind: 'PyroscopeProfileQuery',
+      kind: 'PrometheusTimeSeriesQuery',
       spec: {
         datasource: {
           kind: datasource.kind,
           name: datasource.name,
         },
-        profileType: 'process_cpu:cpu:nanoseconds:cpu:nanoseconds',
-        service: 'pyroscope',
-        maxNodes: 1024,
-        filters: [],
+        query: query,
       },
     },
   ];
@@ -60,15 +58,28 @@ const TimeSeries = () => {
             kind: 'Panel',
             spec: {
               queries: [],
-              display: { name: 'Foo' },
+              display: { name: '' },
               plugin: {
-                kind: 'FlameChart',
+                kind: 'GaugeChart',
                 spec: {
-                  showFlameGraph: true,
-                  showTable: false,
-                  showSettings: true,
-                  showSeries: true,
-                  palette: 'package-name',
+                  calculation: 'Last',
+                  max: 100,
+                  format: {
+                    unit: 'percent',
+                    decimalPlaces: 1,
+                    shortValues: false,
+                  },
+                  thresholds: {
+                    defaultColor: '#28a745',
+                    steps: [
+                      { value: 60, color: '#17a2b8' }, // Info - light blue
+                      { value: 75, color: '#ffc107' }, // Warning - yellow
+                      { value: 90, color: '#dc3545' }, // Critical - red
+                    ],
+                  },
+                  legend: {
+                    show: true,
+                  },
                 },
               },
             },
@@ -79,7 +90,7 @@ const TimeSeries = () => {
   );
 };
 
-const PersesFlameChart = () => {
+const PersesGaugeChart = () => {
   const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
   function toggleWidth() {
@@ -94,8 +105,7 @@ const PersesFlameChart = () => {
         <Content>Customization issues:</Content>
         <List>
           <ListItem>
-            Customization of composite pieces is limited. We won&apost;t be able to use for example PF table or style the table directly as there is no API. We
-            could use some complex CSS rules/overrides but that is brittle
+            We have a decent control over the color pallette which means we can use PF one. We do not have access to the inner style for shapes.
           </ListItem>
         </List>
       </Box>
@@ -110,4 +120,4 @@ const PersesFlameChart = () => {
   );
 };
 
-export default PersesFlameChart;
+export default PersesGaugeChart;
