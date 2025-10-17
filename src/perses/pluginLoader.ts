@@ -1,51 +1,119 @@
 import { dynamicImportPluginLoader } from '@perses-dev/plugin-system';
+
+import * as barchartPlugin from '@perses-dev/bar-chart-plugin';
+import * as datasourceVariablePlugin from '@perses-dev/datasource-variable-plugin';
+// flame chart has some weird import name conflicts, we may have to go directly to the source file
+import * as flameChartPlugin from '@perses-dev/flame-chart-plugin';
+import { FlameChart } from '@perses-dev/flame-chart-plugin/lib/FlameChart';
+import * as gaugeChartPlugin from '@perses-dev/gauge-chart-plugin';
+import * as heatmapChartPlugin from '@perses-dev/heatmap-chart-plugin';
+import * as histogramChartPlugin from '@perses-dev/histogram-chart-plugin';
+import * as lokiPlugin from '@perses-dev/loki-plugin';
+import * as markdownPlugin from '@perses-dev/markdown-plugin';
+import * as pieChartPlugin from '@perses-dev/pie-chart-plugin';
 import * as prometheusPlugin from '@perses-dev/prometheus-plugin';
+import * as pyroscopePlugin from '@perses-dev/pyroscope-plugin';
+import * as scatterChartPlugin from '@perses-dev/scatter-chart-plugin';
+import * as statChartPlugin from '@perses-dev/stat-chart-plugin';
+import * as staticListVariablePlugin from '@perses-dev/static-list-variable-plugin';
+import * as statusHistoryChartPlugin from '@perses-dev/status-history-chart-plugin';
+import * as tablePlugin from '@perses-dev/table-plugin';
+import * as tempoPlugin from '@perses-dev/tempo-plugin';
 import * as timeseriesChartPlugin from '@perses-dev/timeseries-chart-plugin';
 import * as timeSeriesTablePlugin from '@perses-dev/timeseries-table-plugin';
-import * as pieChartPlugin from '@perses-dev/pie-chart-plugin';
-import * as scatterChartPlugin from '@perses-dev/scatter-chart-plugin';
-import * as statusHistoryChartPlugin from '@perses-dev/status-history-chart-plugin';
-import * as markdownPlugin from '@perses-dev/markdown-plugin';
-import * as tablePlugin from '@perses-dev/table-plugin';
-import * as staticListVariablePlugin from '@perses-dev/static-list-variable-plugin';
-/**
- * A PluginLoader that includes all the "built-in" plugins that are bundled with Perses by default and additional custom plugins
- */
+import * as traceTablePlugin from '@perses-dev/trace-table-plugin';
+import * as tracingGanttChartPlugin from '@perses-dev/tracing-gantt-chart-plugin';
+
+console.log({ flameChartPlugin, pieChartPlugin, fc: flameChartPlugin.getPluginModule(), bc: barchartPlugin.getPluginModule() });
+
 export const pluginLoader = dynamicImportPluginLoader([
   {
-    resource: timeseriesChartPlugin.getPluginModule(),
-    importPlugin: async () => Promise.resolve(timeseriesChartPlugin),
+    resource: barchartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(barchartPlugin),
   },
   {
-    resource: prometheusPlugin.getPluginModule(),
-    importPlugin: () => Promise.resolve(prometheusPlugin),
+    resource: datasourceVariablePlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(datasourceVariablePlugin),
   },
   {
-    resource: pieChartPlugin.getPluginModule(),
-    importPlugin: () => Promise.resolve(pieChartPlugin),
+    resource: flameChartPlugin.getPluginModule(),
+    importPlugin: () =>
+      Promise.resolve({
+        ...flameChartPlugin,
+        // need to resolve to the actual configuration
+        FlameChart,
+      }),
   },
   {
-    resource: scatterChartPlugin.getPluginModule(),
-    importPlugin: () => Promise.resolve(scatterChartPlugin),
+    resource: gaugeChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(gaugeChartPlugin),
   },
   {
-    resource: timeSeriesTablePlugin.getPluginModule(),
-    importPlugin: () => Promise.resolve(timeSeriesTablePlugin),
+    resource: heatmapChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(heatmapChartPlugin),
   },
   {
-    resource: statusHistoryChartPlugin.getPluginModule(),
-    importPlugin: () => Promise.resolve(statusHistoryChartPlugin),
+    resource: histogramChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(histogramChartPlugin),
+  },
+  {
+    resource: lokiPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(lokiPlugin),
   },
   {
     resource: markdownPlugin.getPluginModule(),
     importPlugin: () => Promise.resolve(markdownPlugin),
   },
   {
+    resource: pieChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(pieChartPlugin),
+  },
+  {
+    resource: prometheusPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(prometheusPlugin),
+  },
+  {
+    resource: pyroscopePlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(pyroscopePlugin),
+  },
+  {
+    resource: scatterChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(scatterChartPlugin),
+  },
+  {
+    resource: statChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(statChartPlugin),
+  },
+  {
     resource: staticListVariablePlugin.getPluginModule(),
     importPlugin: () => Promise.resolve(staticListVariablePlugin),
   },
   {
+    resource: statusHistoryChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(statusHistoryChartPlugin),
+  },
+  {
     resource: tablePlugin.getPluginModule(),
     importPlugin: () => Promise.resolve(tablePlugin),
+  },
+  {
+    resource: tempoPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(tempoPlugin),
+  },
+  {
+    resource: timeseriesChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(timeseriesChartPlugin),
+  },
+  {
+    resource: timeSeriesTablePlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(timeSeriesTablePlugin),
+  },
+  {
+    resource: traceTablePlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(traceTablePlugin),
+  },
+  {
+    resource: tracingGanttChartPlugin.getPluginModule(),
+    importPlugin: () => Promise.resolve(tracingGanttChartPlugin),
   },
 ]);

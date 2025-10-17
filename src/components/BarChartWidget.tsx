@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
@@ -6,7 +6,7 @@ import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
 import { Box, ListItem } from '@mui/material';
-import { Content, List, Stack, StackItem } from '@patternfly/react-core';
+import { Content, List, Switch } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -60,7 +60,7 @@ const TimeSeries = () => {
               queries: [],
               display: { name: '' },
               plugin: {
-                kind: 'PieChart',
+                kind: 'BarChart',
                 spec: {
                   calculation: 'last',
                   legend: { placement: 'right' },
@@ -75,53 +75,24 @@ const TimeSeries = () => {
   );
 };
 
-const PersesPieChart = () => {
+const PersesBarChart = () => {
+  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
+  function toggleWidth() {
+    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
+  }
   return (
     <Box>
       <Box>
+        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
+      </Box>
+      <Box>
         <Content>Customization issues:</Content>
         <List>
-          <ListItem>
-            Height of the graph is directly tied to the number of segments of the data. The more namespaces, the higher the graph will be:{' '}
-            <a href='https://github.com/perses/plugins/blob/main/piechart/src/PieChartBase.tsx#L96' target='_blank' rel='noreferrer'>
-              code
-            </a>
-          </ListItem>
-          <ListItem>
-            <Stack>
-              <StackItem>
-                When hovering on the chart segments, the label does not overflow the paren container, cutting off the text. The component is missing a tooling
-                configuration:
-              </StackItem>
-              <StackItem>
-                <pre>
-                  {JSON.stringify(
-                    {
-                      tooltip: {
-                        appendToBody: true,
-                        confine: true,
-                        formatter: (params: { name: string; data: number[] }) =>
-                          params.data[1] && `<b>{params.name}</b> &emsp; {formatValue(params.data[1], format)}`,
-                      },
-                    },
-                    null,
-                    2
-                  )}
-                </pre>
-              </StackItem>
-              <StackItem>
-                <p>
-                  <a href='https://github.com/perses/plugins/blob/main/barchart/src/BarChartBase.tsx#L101' target='_blank' rel='noreferrer'>
-                    Refer to bar chart config
-                  </a>
-                </p>
-              </StackItem>
-            </Stack>
-          </ListItem>
+          <ListItem>Height:</ListItem>
         </List>
       </Box>
-      <Box sx={{ height: '400px', width: '400px' }}>
+      <Box sx={{ height: '400px', width: `${width}px` }}>
         <PersesWidgetWrapper>
           <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
             <TimeSeries />
@@ -132,4 +103,4 @@ const PersesPieChart = () => {
   );
 };
 
-export default PersesPieChart;
+export default PersesBarChart;

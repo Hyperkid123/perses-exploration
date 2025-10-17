@@ -1,26 +1,51 @@
 import '@patternfly/react-core/dist/styles/base.css';
-import { Box, ThemeProvider } from '@mui/material';
-import { getTheme } from '@perses-dev/components';
-import { Grid, GridItem } from '@patternfly/react-core';
+import { ThemeProvider } from '@mui/material';
+import { Content, Grid, GridItem } from '@patternfly/react-core';
 import PersesPieChart from './components/PieChartWidget';
-
-const muiTheme = getTheme('light');
+import { usePatternFlyTheme } from './hooks/usePatternflyTheme';
+import PersesBarChart from './components/BarChartWidget';
+import PersesFlameChart from './components/FlameChartWidget';
+import { PluginRegistry } from '@perses-dev/plugin-system';
+import { pluginLoader } from './perses/pluginLoader';
 
 function App() {
+  const theme = usePatternFlyTheme();
   return (
-    <ThemeProvider theme={muiTheme}>
-      <div>
-        <h1>Welcome to Perses Exploration</h1>
-      </div>
-      <div>
-        <Grid hasGutter>
-          <GridItem span={6}>
-            <Box sx={{ height: '400px', width: '400px' }}>
+    <ThemeProvider theme={theme}>
+      <PluginRegistry
+        pluginLoader={pluginLoader}
+        defaultPluginKinds={{
+          Panel: 'TimeSeriesChart',
+          TimeSeriesQuery: 'PrometheusTimeSeriesQuery',
+        }}
+      >
+        <div>
+          <Content>
+            Checking plugins used in the{' '}
+            <a
+              href='https://github.com/openshift/monitoring-plugin/blob/main/web/src/components/dashboards/perses/persesPluginsLoader.tsx'
+              target='_blank'
+              rel='noreferrer'
+            >
+              monitoring plugin in OCP
+            </a>
+            .
+          </Content>
+        </div>
+        <div>
+          <Grid hasGutter>
+            <GridItem span={3}>
               <PersesPieChart />
-            </Box>
-          </GridItem>
-        </Grid>
-      </div>
+            </GridItem>
+            <GridItem span={3}>
+              <PersesBarChart />
+            </GridItem>
+            <GridItem span={3}>
+              <PersesFlameChart />
+            </GridItem>
+          </Grid>
+        </div>
+      </PluginRegistry>
     </ThemeProvider>
   );
 }
