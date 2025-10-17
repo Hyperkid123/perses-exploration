@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw';
 import pieChartResponse from './responses/pieChartResponse.json';
 import gaugeChartResponse from './responses/gaugeChartResponse.json';
 import profileQueryResponse from './responses/profileQueryResponse.json';
+import heatmapResponse from './responses/heatmapResponse.json';
 
 export const handlers = [
   http.post('prometheus/api/v1/query_range', async ({ request }) => {
@@ -15,6 +16,9 @@ export const handlers = [
     } else if (query === 'avg(rate(node_cpu_seconds_total{mode!="idle"}[5m])) * 100') {
       console.log('Returning gauge chart response');
       return HttpResponse.json(gaugeChartResponse);
+    } else if (query === 'histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))') {
+      console.log('Returning heatmap histogram response');
+      return HttpResponse.json(heatmapResponse);
     }
 
     // fallback to time series query
