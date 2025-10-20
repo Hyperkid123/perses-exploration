@@ -6,6 +6,7 @@ import heatmapResponse from './responses/heatmapResponse.json';
 import traceSearchResponse from './responses/traceSearchResponse.json';
 import statChartResponse from './responses/statChartResponse.json';
 import statusHistoryResponse from './responses/statusHistoryResponse.json';
+import timeSeriesResponse from './responses/timeSeriesResponse.json';
 
 export const handlers = [
   http.post('prometheus/api/v1/query_range', async ({ request }) => {
@@ -28,6 +29,9 @@ export const handlers = [
     } else if (query === 'up{job=~".*"}') {
       console.log('Returning status history response');
       return HttpResponse.json(statusHistoryResponse);
+    } else if (query === 'cpu_usage{namespace=~".*"}') {
+      console.log('Returning time series response');
+      return HttpResponse.json(timeSeriesResponse);
     }
 
     // fallback to time series query

@@ -13,6 +13,7 @@ import PersesHistogramChart from './components/HistogramChartWidget';
 import PersesScatterChart from './components/ScatterChartWidget';
 import PersesStatChart from './components/StatChartWidget';
 import PersesStatusHistoryChart from './components/StatusHistoryChartWidget';
+import PersesTimeSeriesChart from './components/TimeSeriesChartWidget';
 
 function App() {
   const theme = usePatternFlyTheme();
@@ -66,6 +67,9 @@ function App() {
             </GridItem>
             <GridItem span={3}>
               <PersesStatusHistoryChart />
+            </GridItem>
+            <GridItem span={3}>
+              <PersesTimeSeriesChart />
             </GridItem>
           </Grid>
         </div>
