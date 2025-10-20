@@ -45,9 +45,6 @@ function App() {
         <div>
           <Grid hasGutter>
             <GridItem span={3}>
-              <PersesPieChart />
-            </GridItem>
-            <GridItem span={3}>
               <PersesBarChart />
             </GridItem>
             <GridItem span={3}>
@@ -61,6 +58,9 @@ function App() {
             </GridItem>
             <GridItem span={3}>
               <PersesHistogramChart />
+            </GridItem>
+            <GridItem span={3}>
+              <PersesPieChart />
             </GridItem>
             <GridItem span={3}>
               <PersesScatterChart />

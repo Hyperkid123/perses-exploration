@@ -64,11 +64,12 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'FlameChart',
                 spec: {
-                  showFlameGraph: true,
-                  showTable: false,
-                  showSettings: true,
-                  showSeries: true,
-                  palette: 'package-name',
+                  palette: 'package-name', // 'package-name' | 'value'
+                  showSettings: true, // Show settings panel
+                  showSeries: true, // Show series information
+                  showTable: false, // Hide data table view
+                  showFlameGraph: true, // Show flame graph visualization
+                  // traceHeight: 200, // Optional custom height
                 },
               },
             },
@@ -91,11 +92,40 @@ const PersesFlameChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Customization issues:</Content>
+        <Content>FlameChart Available Configuration Options:</Content>
         <List>
           <ListItem>
-            Customization of composite pieces is limited. We won&apost;t be able to use for example PF table or style the table directly as there is no API. We
-            could use some complex CSS rules/overrides but that is brittle
+            ✅ <strong>palette:</strong> &lsquo;package-name&rsquo; | &lsquo;value&rsquo; - Color scheme for flame graph
+          </ListItem>
+          <ListItem>
+            ✅ <strong>showSettings:</strong> boolean - Display settings panel
+          </ListItem>
+          <ListItem>
+            ✅ <strong>showSeries:</strong> boolean - Show series information
+          </ListItem>
+          <ListItem>
+            ✅ <strong>showTable:</strong> boolean - Display data table view
+          </ListItem>
+          <ListItem>
+            ✅ <strong>showFlameGraph:</strong> boolean - Show flame graph visualization
+          </ListItem>
+          <ListItem>
+            ✅ <strong>traceHeight:</strong> number (optional) - Custom height for trace visualization
+          </ListItem>
+        </List>
+        <Content>PatternFly Integration Challenges:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Composite Components:</strong> Limited customization of internal table/graph pieces
+          </ListItem>
+          <ListItem>
+            ❌ <strong>PatternFly Table:</strong> Cannot directly style internal table with PF components
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Override Requirement:</strong> Would need brittle CSS rules for PF styling
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Theme Integration:</strong> Limited to overall container theming
           </ListItem>
         </List>
       </Box>

@@ -62,23 +62,23 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'GaugeChart',
                 spec: {
-                  calculation: 'Last',
-                  max: 100,
+                  calculation: 'last', // 'last', 'mean', 'max', 'min', 'sum'
+                  max: 100, // Maximum value for gauge scale
                   format: {
-                    unit: 'percent',
-                    decimalPlaces: 1,
-                    shortValues: false,
+                    unit: 'percent', // Unit formatting
+                    decimalPlaces: 1, // Number precision
+                    shortValues: false, // Use short notation (1k vs 1000)
                   },
                   thresholds: {
-                    defaultColor: '#28a745',
+                    defaultColor: '#3e8635', // PatternFly success green
                     steps: [
-                      { value: 60, color: '#17a2b8' }, // Info - light blue
-                      { value: 75, color: '#ffc107' }, // Warning - yellow
-                      { value: 90, color: '#dc3545' }, // Critical - red
+                      { value: 60, color: '#06c' }, // PatternFly primary blue
+                      { value: 75, color: '#f0ab00' }, // PatternFly warning yellow
+                      { value: 90, color: '#c9190b' }, // PatternFly danger red
                     ],
                   },
                   legend: {
-                    show: true,
+                    show: true, // Display legend
                   },
                 },
               },
@@ -102,11 +102,42 @@ const PersesGaugeChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Customization issues:</Content>
+        <Content>GaugeChart Available Configuration Options:</Content>
         <List>
-          <ListItem>
-            We have a decent control over the color pallette which means we can use PF one. We do not have access to the inner style for shapes.
-          </ListItem>
+          <ListItem>✅ <strong>calculation:</strong> &lsquo;last&rsquo;, &lsquo;mean&rsquo;, &lsquo;max&rsquo;, &lsquo;min&rsquo;, &lsquo;sum&rsquo; - Data aggregation method</ListItem>
+          <ListItem>✅ <strong>max:</strong> number - Maximum value for gauge scale (default: 100)</ListItem>
+          <ListItem>✅ <strong>format:</strong> Unit, decimal places, short values configuration</ListItem>
+          <ListItem>✅ <strong>thresholds:</strong> Color-coded value ranges with custom colors</ListItem>
+          <ListItem>✅ <strong>legend:</strong> Show/hide legend display</ListItem>
+        </List>
+        <Content>PatternFly Integration Capabilities:</Content>
+        <List>
+          <ListItem>✅ <strong>Color Palette:</strong> Full control over threshold colors using PatternFly palette</ListItem>
+          <ListItem>✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables</ListItem>
+          <ListItem>✅ <strong>Theme Integration:</strong> Uses chartsTheme.echartsTheme.gauge for styling</ListItem>
+          <ListItem>✅ <strong>Threshold Styling:</strong> PatternFly semantic colors (success, warning, danger)</ListItem>
+        </List>
+        <Content>Current PatternFly Configuration:</Content>
+        <List>
+          <ListItem>Default: #3e8635 (PatternFly success green)</ListItem>
+          <ListItem>60%+: #06c (PatternFly primary blue)</ListItem>
+          <ListItem>75%+: #f0ab00 (PatternFly warning yellow)</ListItem>
+          <ListItem>90%+: #c9190b (PatternFly danger red)</ListItem>
+        </List>
+        <Content>Advanced PatternFly Styling via ChartsTheme:</Content>
+        <List>
+          <ListItem>✅ <strong>Gauge Appearance:</strong> Configure via chartsTheme.echartsTheme.gauge</ListItem>
+          <ListItem>✅ <strong>Arc Styling:</strong> Custom arc width, colors, and gradients</ListItem>
+          <ListItem>✅ <strong>Pointer Styling:</strong> Custom needle/pointer appearance</ListItem>
+          <ListItem>✅ <strong>Label Formatting:</strong> Custom text styling and positioning</ListItem>
+        </List>
+        <Content>Limitations:</Content>
+        <List>
+          <ListItem>❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes</ListItem>
+          <ListItem>❌ <strong>Inner Shape Styling:</strong> Limited access to internal SVG elements</ListItem>
+          <ListItem>❌ <strong>Animation Control:</strong> No direct animation configuration</ListItem>
+          <ListItem>❌ <strong>Custom Tick Marks:</strong> Limited tick customization options</ListItem>
+          <ListItem>⚠️ <strong>Theme Sync:</strong> Colors must be manually updated when PatternFly theme changes</ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: `${width}px` }}>

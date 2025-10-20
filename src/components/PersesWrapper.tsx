@@ -47,6 +47,23 @@ const chartsTheme = generateChartsTheme(muiTheme, {
       left: 60,
       containLabel: true,
     },
+    // Bar chart specific styling for PatternFly appearance
+    bar: {
+      itemStyle: {
+        borderRadius: [2, 2, 0, 0], // Rounded top corners - PatternFly style
+        borderWidth: 0,
+      },
+      emphasis: {
+        itemStyle: {
+          borderRadius: [2, 2, 0, 0],
+          shadowBlur: 5,
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+        },
+      },
+      barMaxWidth: 50, // Maximum bar width for better appearance
+      barGap: '20%', // Gap between bars in same category
+      barCategoryGap: '40%', // Gap between categories
+    },
   },
   // Custom threshold colors for status indicators
   thresholds: {

@@ -63,18 +63,18 @@ const TimeSeries = () => {
                 kind: 'HistogramChart',
                 spec: {
                   format: {
-                    unit: 'decimal',
-                    decimalPlaces: 0,
-                    shortValues: true,
+                    unit: 'decimal', // Unit formatting (decimal, bytes, seconds, etc.)
+                    decimalPlaces: 0, // Number precision
+                    shortValues: true, // Use short notation (1k vs 1000)
                   },
-                  min: 0,
-                  max: 10,
+                  min: 0, // Minimum value for histogram range
+                  max: 10, // Maximum value for histogram range
                   thresholds: {
-                    defaultColor: '#06c', // PatternFly blue
+                    defaultColor: '#06c', // PatternFly primary blue
                     steps: [
-                      { value: 2, color: '#3e8635' }, // PF success green
-                      { value: 5, color: '#f0ab00' }, // PF warning yellow
-                      { value: 8, color: '#c9190b' }, // PF danger red
+                      { value: 2, color: '#3e8635' }, // PatternFly success green
+                      { value: 5, color: '#f0ab00' }, // PatternFly warning yellow
+                      { value: 8, color: '#c9190b' }, // PatternFly danger red
                     ],
                   },
                 },
@@ -99,15 +99,59 @@ const PersesHistogramChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Customization issues:</Content>
+        <Content>HistogramChart Available Configuration Options:</Content>
         <List>
           <ListItem>
-            When hovering on the chart segments, the label does not overflow the paren container, cutting off the text. The component is missing a tooltip
-            configuration
+            ✅ <strong>format:</strong> FormatOptions - Value formatting (unit, decimal places, short values)
           </ListItem>
-          <ListItem>⚠️ Limited: No built-in rounded corners for bars</ListItem>
-          <ListItem>⚠️ Limited: Standard ECharts typography (theme-dependent)</ListItem>
-          <ListItem>⚠️ Limited: Basic tooltip styling (not PF-styled)</ListItem>
+          <ListItem>
+            ✅ <strong>min:</strong> number - Minimum value for histogram range
+          </ListItem>
+          <ListItem>
+            ✅ <strong>max:</strong> number - Maximum value for histogram range
+          </ListItem>
+          <ListItem>
+            ✅ <strong>thresholds:</strong> ThresholdOptions - Color-coded value ranges with custom colors
+          </ListItem>
+        </List>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>format: {`{ unit: 'decimal', decimalPlaces: 0, shortValues: true }`}</ListItem>
+          <ListItem>min: 0, max: 10</ListItem>
+          <ListItem>thresholds: PatternFly color scheme (blue, green, yellow, red)</ListItem>
+        </List>
+        <Content>PatternFly Integration Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Color Palette:</strong> Full control over threshold colors using PatternFly hex codes
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Value Formatting:</strong> Comprehensive format options for data display
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Range Control:</strong> Configurable min/max values for histogram buckets
+          </ListItem>
+        </List>
+        <Content>Known Issues & Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Tooltip Overflow:</strong> Labels get cut off when hovering on chart segments - missing tooltip configuration
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Bar Styling:</strong> No built-in rounded corners for bars
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Typography:</strong> Standard ECharts typography (theme-dependent)
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Tooltip Styling:</strong> Basic tooltip styling (not PatternFly-styled)
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: `${width}px` }}>

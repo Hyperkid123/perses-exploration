@@ -95,11 +95,13 @@ const TimeSeries = () => {
                 plugin: {
                   kind: 'TraceTable',
                   spec: {
-                    // Visual customization options
-                    sizeRange: [8, 30], // Point size range for scatter plot visualization
-                    link: '/traces/{traceId}?datasource={datasourceName}', // Custom link template
-                    palette: {
-                      mode: 'categorical', // 'auto' or 'categorical'
+                    visual: {
+                      palette: {
+                        mode: 'categorical', // 'auto' or 'categorical'
+                      },
+                    },
+                    links: {
+                      trace: '/traces/{traceId}?datasource={datasourceName}', // Custom trace link with variables
                     },
                   },
                 },
@@ -124,22 +126,85 @@ const PersesTraceTable = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>TraceTable Customization Options:</Content>
+        <Content>TraceTable Available Configuration Options:</Content>
         <List>
-          <ListItem>✅ Size Range: Configure point sizes [min, max] for scatter visualization</ListItem>
-          <ListItem>✅ Link Template: Custom trace link patterns with variables</ListItem>
-          <ListItem>✅ Palette Mode: 'auto' or 'categorical' color selection</ListItem>
-          <ListItem>✅ Theme Integration: Uses Perses charts theme automatically</ListItem>
-          <ListItem>✅ DataGrid Styling: Standard MUI DataGrid appearance</ListItem>
+          <ListItem>
+            ✅ <strong>visual:</strong> TraceTableVisualOptions (optional) - Visual customization options
+          </ListItem>
+          <ListItem>
+            ✅ <strong>links:</strong> TraceTableCustomLinks (optional) - Custom link configuration
+          </ListItem>
         </List>
-        <Content>Customization Limitations:</Content>
+        <Content>Visual Options (visual property):</Content>
         <List>
-          <ListItem>❌ Column Configuration: No custom column controls</ListItem>
-          <ListItem>❌ Table Styling: Limited beyond theme colors</ListItem>
-          <ListItem>❌ Row Display Options: No row height or density controls</ListItem>
-          <ListItem>❌ Advanced Filtering: No built-in filter options</ListItem>
-          <ListItem>❌ Custom Data Formatters: Limited formatting control</ListItem>
-          <ListItem>⚠️ Theme Conflict: Requires isolated ThemeProvider with PatternFly</ListItem>
+          <ListItem>
+            ✅ <strong>palette:</strong> TraceTablePaletteOptions - Color palette configuration (&lsquo;auto&rsquo; or &lsquo;categorical&rsquo;)
+          </ListItem>
+        </List>
+        <Content>Link Options (links property):</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>trace:</strong> string - Custom trace link template with variables (traceId, datasourceName)
+          </ListItem>
+        </List>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>visual.palette.mode: &lsquo;categorical&rsquo;</ListItem>
+          <ListItem>
+            links.trace: &lsquo;/traces/{`{traceId}`}?datasource={`{datasourceName}`}&rsquo;
+          </ListItem>
+          <ListItem>query: &lsquo;{`{service.name=~".*service"}`} | avg(duration) &gt; 100ms&rsquo;</ListItem>
+        </List>
+        <Content>Built-in Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>DataGrid Display:</strong> Uses MUI DataGrid for tabular trace display
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Interactive Links:</strong> Click-to-navigate trace details with variable substitution
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Automatic Columns:</strong> Fixed columns for trace data (Service, Operation, Duration, etc.)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Color Coding:</strong> Configurable color palette for trace visualization
+          </ListItem>
+        </List>
+        <Content>PatternFly Integration Challenges:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>MUI DataGrid Dependency:</strong> Uses MUI DataGrid exclusively, cannot use PatternFly tables
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Theme Conflicts:</strong> Requires isolated ThemeProvider to avoid PatternFly CSS conflicts
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Fixed Table Structure:</strong> Cannot replace with PatternFly Table components
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Limited Theme Integration:</strong> Basic theme isolation with createTheme override
+          </ListItem>
+        </List>
+        <Content>Major Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Column Configuration:</strong> No custom column controls or visibility options
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Table Styling:</strong> Limited styling beyond basic theme colors
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Row Display Options:</strong> No row height, density, or layout controls
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Advanced Filtering:</strong> No built-in filtering or search options
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Custom Data Formatters:</strong> Limited cell rendering and formatting control
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables due to theme isolation
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: width === 200 ? '200px' : '100%' }}>

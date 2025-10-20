@@ -62,21 +62,23 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'StatChart',
                 spec: {
-                  calculation: 'last',
-                  format: { unit: 'percent' },
+                  calculation: 'last', // 'last', 'mean', 'max', 'min', 'sum'
+                  format: { unit: 'percent' }, // Unit formatting
                   sparkline: {
-                    color: '#06c',
-                    width: 2
+                    color: '#06c', // PatternFly primary blue
+                    width: 2, // Sparkline thickness
                   },
-                  valueFontSize: 'lg',
+                  valueFontSize: 'lg', // 'xs', 'sm', 'md', 'lg', 'xl'
                   thresholds: {
-                    defaultColor: '#3e8635',
+                    defaultColor: '#3e8635', // PatternFly success green
                     steps: [
-                      { value: 30, color: '#3e8635' },
-                      { value: 70, color: '#f0ab00' },
-                      { value: 85, color: '#c9190b' }
-                    ]
-                  }
+                      { value: 30, color: '#3e8635' }, // Success
+                      { value: 70, color: '#f0ab00' }, // Warning
+                      { value: 85, color: '#c9190b' }, // Danger
+                    ],
+                  },
+                  // metricLabel: 'CPU Usage', // Optional custom label
+                  // mappings: [], // Optional value mappings
                 },
               },
             },
@@ -99,47 +101,59 @@ const PersesStatChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Stat Chart Customization Options:</Content>
+        <Content>StatChart Available Configuration Options:</Content>
         <List>
           <ListItem>
-            <strong>✅ Calculation Method:</strong> `calculation` - 'last', 'mean', 'max', 'min', 'sum'
+            ✅ <strong>calculation:</strong> CalculationType - Data aggregation method (&lsquo;last&rsquo;, &lsquo;mean&rsquo;, &lsquo;max&rsquo;,
+            &lsquo;min&rsquo;, &lsquo;sum&rsquo;)
           </ListItem>
           <ListItem>
-            <strong>✅ Sparkline Config:</strong> `sparkline.color`, `sparkline.width` - Mini trend line
+            ✅ <strong>format:</strong> FormatOptions - Value formatting (unit, decimal places, short values)
           </ListItem>
           <ListItem>
-            <strong>✅ Value Font Size:</strong> `valueFontSize` - 'xs', 'sm', 'md', 'lg', 'xl'
+            ✅ <strong>sparkline:</strong> StatChartSparklineOptions - Mini trend line configuration (color, width)
           </ListItem>
           <ListItem>
-            <strong>✅ Color Thresholds:</strong> `thresholds.steps` - Value-based color coding
+            ✅ <strong>valueFontSize:</strong> FontSizeOption - Value text size (&lsquo;xs&rsquo;, &lsquo;sm&rsquo;, &lsquo;md&rsquo;, &lsquo;lg&rsquo;,
+            &lsquo;xl&rsquo;)
           </ListItem>
           <ListItem>
-            <strong>✅ Format Options:</strong> `format.unit` - 'percent', 'bytes', 'seconds', etc.
+            ✅ <strong>thresholds:</strong> ThresholdOptions - Color-coded value ranges with custom colors
           </ListItem>
           <ListItem>
-            <strong>✅ Theme Integration:</strong> Uses chartsTheme for colors and styling
+            ✅ <strong>metricLabel:</strong> string (optional) - Custom label for the metric
           </ListItem>
           <ListItem>
-            <strong>✅ Simplified Query:</strong> Using 'avg(cpu_usage_percent) by (service)' for better visibility
+            ✅ <strong>mappings:</strong> ValueMapping[] (optional) - Value transformation mappings
           </ListItem>
         </List>
-        <Content>Customization Limitations:</Content>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>calculation: &lsquo;last&rsquo;, format: {`{ unit: 'percent' }`}</ListItem>
+          <ListItem>sparkline: {`{ color: '#06c', width: 2 }`} (PatternFly blue)</ListItem>
+          <ListItem>valueFontSize: &lsquo;lg&rsquo;</ListItem>
+          <ListItem>thresholds: PatternFly color scheme (green → yellow → red)</ListItem>
+        </List>
+        <Content>PatternFly Integration & Issues:</Content>
         <List>
           <ListItem>
-            <strong>🔴 Text Size:</strong> Fixed font sizes, not responsive to container size
+            ✅ <strong>Color Palette:</strong> Full threshold color control using PatternFly hex codes
           </ListItem>
           <ListItem>
-            <strong>🔴 Color Thresholds:</strong> Limited threshold-based coloring options
+            ✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables
           </ListItem>
           <ListItem>
-            <strong>🔴 Layout Control:</strong> Fixed stat card layout and spacing
+            ⚠️ <strong>Height Issue Fixed:</strong> Changed from fixed height to minHeight to prevent NaN errors
           </ListItem>
           <ListItem>
-            <strong>🔴 Value Formatting:</strong> Basic number formatting, limited unit options
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Layout Control:</strong> Fixed stat card layout and spacing
           </ListItem>
         </List>
       </Box>
-      <Box sx={{ height: '200px', width: `${width}px` }}>
+      <Box sx={{ height: 200, minHeight: '150px', width: `${width}px` }}>
         <PersesWidgetWrapper>
           <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
             <TimeSeries />

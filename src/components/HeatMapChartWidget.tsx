@@ -63,12 +63,12 @@ const TimeSeries = () => {
                 kind: 'HeatMapChart',
                 spec: {
                   yAxisFormat: {
-                    unit: 'decimal',
+                    unit: 'decimal', // Y-axis value formatting (decimal, bytes, seconds, etc.)
                   },
                   countFormat: {
-                    unit: 'decimal',
+                    unit: 'decimal', // Count/frequency formatting for color mapping
                   },
-                  showVisualMap: true,
+                  showVisualMap: true, // Show color scale legend/visual map
                 },
               },
             },
@@ -91,15 +91,59 @@ const PersesHeatMapChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Customization issues:</Content>
+        <Content>HeatMapChart Available Configuration Options:</Content>
         <List>
-          <ListItem>Color scheme: Hard-coded blue→yellow→red gradient (not PF colors)</ListItem>
-          <ListItem>Cell borders: No rounded corners option (fixed rectangular cells)</ListItem>
-          <ListItem>Legend styling: Fixed ECharts visual map (no PF styling)</ListItem>
-          <ListItem>Grid spacing: Standard ECharts spacing (cannot adjust cell gaps)</ListItem>
-          <ListItem>Typography: Limited to theme fonts (no PF typography control)</ListItem>
-          <ListItem>Hover effects: Fixed #333 border (no PF interaction styles)</ListItem>
-          <ListItem>Container styling: Standard chart padding (no PF container styles)</ListItem>
+          <ListItem>
+            ✅ <strong>yAxisFormat:</strong> FormatOptions - Y-axis value formatting (unit, decimal places)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>countFormat:</strong> FormatOptions - Count/frequency formatting for color mapping
+          </ListItem>
+          <ListItem>
+            ✅ <strong>showVisualMap:</strong> boolean - Toggle color scale legend visibility
+          </ListItem>
+        </List>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>yAxisFormat: {`{ unit: 'decimal' }`}</ListItem>
+          <ListItem>countFormat: {`{ unit: 'decimal' }`}</ListItem>
+          <ListItem>showVisualMap: true</ListItem>
+        </List>
+        <Content>PatternFly Integration Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Color Scheme:</strong> Hard-coded blue→yellow→red gradient (not PF colors)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Cell Styling:</strong> No rounded corners option (fixed rectangular cells)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Legend Styling:</strong> Fixed ECharts visual map (no PF styling)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Grid Spacing:</strong> Standard ECharts spacing (cannot adjust cell gaps)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Typography:</strong> Limited to theme fonts (no PF typography control)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Hover Effects:</strong> Fixed #333 border (no PF interaction styles)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables for colors
+          </ListItem>
+        </List>
+        <Content>Potential PatternFly Workarounds:</Content>
+        <List>
+          <ListItem>
+            ⚠️ <strong>Theme Integration:</strong> Limited to chartsTheme.echartsTheme configuration
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Container Styling:</strong> Apply PF styles to wrapper components
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Font Integration:</strong> Uses PatternFly fonts via CSS variables
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: `${width}px` }}>

@@ -62,13 +62,13 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'StatusHistoryChart',
                 spec: {
-                  legend: { placement: 'bottom' },
+                  legend: { placement: 'bottom' }, // Legend position ('bottom', 'right', 'top')
                   mappings: [
                     {
-                      type: 'value',
+                      type: 'value', // Value mapping type
                       options: {
-                        '0': { text: 'Down', color: '#c9190b' },
-                        '1': { text: 'Up', color: '#3e8635' },
+                        '0': { text: 'Down', color: '#c9190b' }, // PatternFly danger red
+                        '1': { text: 'Up', color: '#3e8635' }, // PatternFly success green
                       },
                     },
                   ],
@@ -94,37 +94,67 @@ const PersesStatusHistoryChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Status History Chart Customization Options:</Content>
+        <Content>StatusHistoryChart Available Configuration Options:</Content>
         <List>
           <ListItem>
-            <strong>✅ Value Mappings:</strong> `mappings` - Maps values (0/1) to text and colors
+            ✅ <strong>legend:</strong> LegendSpecOptions (optional) - Legend configuration and placement
           </ListItem>
           <ListItem>
-            <strong>✅ Legend Placement:</strong> `legend.placement` - 'bottom', 'right', 'top'
-          </ListItem>
-          <ListItem>
-            <strong>✅ Status Colors:</strong> Custom colors for Up (green) and Down (red)
-          </ListItem>
-          <ListItem>
-            <strong>✅ Service Monitoring:</strong> Shows service availability over time
-          </ListItem>
-          <ListItem>
-            <strong>✅ Theme Integration:</strong> Uses chartsTheme for styling
+            ✅ <strong>mappings:</strong> ValueMapping[] (optional) - Maps values to text labels and colors
           </ListItem>
         </List>
-        <Content>Customization Limitations:</Content>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>legend: {`{ placement: 'bottom' }`}</ListItem>
+          <ListItem>mappings: Value-based mapping (0 → Down/Red, 1 → Up/Green)</ListItem>
+          <ListItem>query: &apos;up{`{job=~".*"}`}&apos; - Service availability metric</ListItem>
+        </List>
+        <Content>Built-in Capabilities:</Content>
         <List>
           <ListItem>
-            <strong>🔴 Chart Type:</strong> Fixed grid-based heatmap, no alternative layouts
+            ✅ <strong>Service Monitoring:</strong> Shows service availability over time as grid heatmap
           </ListItem>
           <ListItem>
-            <strong>🔴 Time Granularity:</strong> Limited control over time bucket sizing
+            ✅ <strong>Time-based Visualization:</strong> Historical status tracking with time buckets
           </ListItem>
           <ListItem>
-            <strong>🔴 Cell Styling:</strong> Fixed cell shapes and borders
+            ✅ <strong>Multi-service Support:</strong> Displays multiple services in stacked rows
           </ListItem>
           <ListItem>
-            <strong>🔴 Tooltip Content:</strong> Basic tooltip with limited customization
+            ✅ <strong>Interactive Tooltips:</strong> Shows timestamp and status details on hover
+          </ListItem>
+        </List>
+        <Content>PatternFly Integration Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Status Colors:</strong> Uses PatternFly semantic colors (success green, danger red)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Legend Styling:</strong> Configurable legend placement and styling
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Theme Integration:</strong> Uses chartsTheme for overall styling
+          </ListItem>
+        </List>
+        <Content>Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Minimal Configuration:</strong> Very limited customization options (only 2 properties)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Chart Type:</strong> Fixed grid-based heatmap, no alternative layouts
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Time Granularity:</strong> Limited control over time bucket sizing
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Cell Styling:</strong> Fixed cell shapes and borders
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes
           </ListItem>
         </List>
       </Box>

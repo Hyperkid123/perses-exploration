@@ -63,8 +63,9 @@ const TimeSeries = () => {
                 kind: 'BarChart',
                 spec: {
                   calculation: 'last',
-                  legend: { placement: 'right' },
-                  value: { placement: 'center' },
+                  format: { unit: 'percent' },
+                  sort: 'desc', // 'asc' or 'desc'
+                  mode: 'value', // 'value' or 'percentage'
                 },
               },
             },
@@ -87,9 +88,59 @@ const PersesBarChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Customization issues:</Content>
+        <Content>BarChart Customization Options:</Content>
         <List>
-          <ListItem>Height:</ListItem>
+          <ListItem>
+            ✅ <strong>Calculation:</strong> &lsquo;last&rsquo;, &lsquo;mean&rsquo;, &lsquo;max&rsquo;, &lsquo;min&rsquo;, &lsquo;sum&rsquo;
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Format:</strong> unit formatting (percent, bytes, seconds, etc.)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Sort:</strong> &lsquo;asc&rsquo; or &lsquo;desc&rsquo; for bar ordering
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Mode:</strong> &lsquo;value&rsquo; (actual values) or &lsquo;percentage&rsquo; (relative percentages)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Theme Integration:</strong> Uses chartsTheme.echartsTheme.bar for styling
+          </ListItem>
+        </List>
+        <Content>PatternFly Styling via ChartsTheme:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Bar Colors:</strong> PatternFly color palette via chartsTheme.echartsTheme.color[]
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Bar Styling:</strong> Configure via chartsTheme.echartsTheme.bar options
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Typography:</strong> PatternFly fonts via CSS variables
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Grid & Axes:</strong> PatternFly colors via chartsTheme.echartsTheme.grid
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Tooltips:</strong> PatternFly styling via chartsTheme.echartsTheme.tooltip
+          </ListItem>
+        </List>
+        <Content>Customization Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Individual Bar Styling:</strong> No per-bar customization
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Advanced Layout:</strong> No horizontal bar chart option
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Animation Control:</strong> Limited animation configuration
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Interactive Features:</strong> No built-in click/hover handlers
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Legend Customization:</strong> No legend display options
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: `${width}px` }}>

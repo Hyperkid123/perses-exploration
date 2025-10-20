@@ -108,9 +108,9 @@ const TimeSeries = () => {
                       attributes: [
                         {
                           name: 'http.url',
-                          link: '/logs?filter=url:{value}'
-                        }
-                      ]
+                          link: '/logs?filter=url:{value}',
+                        },
+                      ],
                     },
                     // Initial span selection
                     selectedSpanId: 'span1001',
@@ -137,25 +137,103 @@ const PersesTracingGanttChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>TracingGanttChart Customization Options:</Content>
+        <Content>TracingGanttChart Available Configuration Options:</Content>
         <List>
-          <ListItem>✅ Palette Mode: 'auto' or 'categorical' color schemes</ListItem>
-          <ListItem>✅ Custom Links: Trace, span, and attribute-specific links</ListItem>
-          <ListItem>✅ Link Variables: {'{traceId}'}, {'{spanId}'}, {'{datasourceName}'}, {'{value}'}</ListItem>
-          <ListItem>✅ Initial Selection: Set selectedSpanId for default focus</ListItem>
-          <ListItem>✅ Theme Integration: Uses Perses charts theme automatically</ListItem>
-          <ListItem>✅ Attribute Links: Custom links for specific span attributes</ListItem>
+          <ListItem>
+            ✅ <strong>visual:</strong> TracingGanttChartVisualOptions (optional) - Visual customization options
+          </ListItem>
+          <ListItem>
+            ✅ <strong>links:</strong> TracingGanttChartCustomLinks (optional) - Custom link configuration
+          </ListItem>
+          <ListItem>
+            ✅ <strong>selectedSpanId:</strong> string (optional) - Initially selected span ID
+          </ListItem>
         </List>
-        <Content>Customization Limitations:</Content>
+        <Content>Visual Options (visual property):</Content>
         <List>
-          <ListItem>❌ Timeline Orientation: No horizontal/vertical toggle</ListItem>
-          <ListItem>❌ Zoom Controls: No built-in zoom configuration</ListItem>
-          <ListItem>❌ Color Schemes: Limited to palette mode options</ListItem>
-          <ListItem>❌ Legend Formatting: No custom legend controls</ListItem>
-          <ListItem>❌ Span Visualization: No custom span appearance options</ListItem>
-          <ListItem>❌ Layout Configuration: No timeline layout customization</ListItem>
-          <ListItem>❌ Filtering Options: No built-in span filtering</ListItem>
-          <ListItem>⚠️ Advanced Styling: Requires external CSS/theming</ListItem>
+          <ListItem>
+            ✅ <strong>palette:</strong> TracingGanttChartPaletteOptions - Color palette configuration (&lsquo;auto&rsquo; or &lsquo;categorical&rsquo;)
+          </ListItem>
+        </List>
+        <Content>Link Options (links property):</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>trace:</strong> string - Custom trace link template with variables (traceId, datasourceName)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>span:</strong> string - Custom span link template with variables (traceId, spanId, datasourceName)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>attributes:</strong> TracingGanttChartCustomAttributeLink[] - Custom attribute-specific links
+          </ListItem>
+        </List>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>visual.palette.mode: &lsquo;categorical&rsquo;</ListItem>
+          <ListItem>links.trace: &lsquo;/traces/&#123;traceId&#125;?datasource=&#123;datasourceName&#125;&rsquo;</ListItem>
+          <ListItem>links.span: &lsquo;/traces/&#123;traceId&#125;/spans/&#123;spanId&#125;?datasource=&#123;datasourceName&#125;&rsquo;</ListItem>
+          <ListItem>links.attributes: Custom http.url attribute link configured</ListItem>
+          <ListItem>selectedSpanId: &lsquo;span1001&rsquo; - Initial span focus</ListItem>
+        </List>
+        <Content>Built-in Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Timeline Visualization:</strong> Interactive Gantt chart for trace spans
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Span Hierarchy:</strong> Visual representation of span parent-child relationships
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Interactive Navigation:</strong> Click-to-navigate with variable substitution
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Span Selection:</strong> Configurable initial span focus
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Attribute Links:</strong> Custom links for specific span attributes
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Timeline Controls:</strong> Built-in zoom and pan functionality
+          </ListItem>
+        </List>
+        <Content>PatternFly Integration Challenges:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Complex Component Structure:</strong> Uses specialized Gantt chart components, not PatternFly
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Theme Conflicts:</strong> Requires isolated ThemeProvider to avoid PatternFly CSS conflicts
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Fixed Gantt Layout:</strong> Cannot replace with PatternFly timeline components
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Limited Theme Integration:</strong> Basic theme isolation with createTheme override
+          </ListItem>
+        </List>
+        <Content>Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Timeline Orientation:</strong> No horizontal/vertical toggle options
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Color Schemes:</strong> Limited to palette mode options (&lsquo;auto&rsquo; or &lsquo;categorical&rsquo;)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Legend Formatting:</strong> No custom legend controls
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Span Visualization:</strong> No custom span appearance options
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Layout Configuration:</strong> No timeline layout customization
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Filtering Options:</strong> No built-in span filtering
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables due to theme isolation
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: width === 200 ? '200px' : '100%' }}>

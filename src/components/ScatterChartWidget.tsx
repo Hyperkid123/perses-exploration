@@ -62,8 +62,8 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'ScatterChart',
                 spec: {
-                  sizeRange: [8, 30],
-                  link: '/traces/{traceId}?datasource={datasourceName}',
+                  sizeRange: [8, 30], // Circle diameter range [min, max] pixels
+                  link: '/traces/{traceId}?datasource={datasourceName}', // Click navigation with variables
                 },
               },
             },
@@ -86,46 +86,72 @@ const PersesScatterChart = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>Scatter Chart Customization Options:</Content>
+        <Content>ScatterChart Available Configuration Options:</Content>
         <List>
           <ListItem>
-            <strong>✅ Point Size Range:</strong> `sizeRange: [min, max]` - Controls circle diameter (default: [6,20])
+            ✅ <strong>sizeRange:</strong> [number, number] - Circle diameter range [min, max] pixels (optional)
           </ListItem>
           <ListItem>
-            <strong>✅ Click Navigation:</strong> `link` property supports trace navigation with variables
-          </ListItem>
-          <ListItem>
-            <strong>✅ Theme Integration:</strong> Uses chartsTheme for default colors and ECharts theme
-          </ListItem>
-          <ListItem>
-            <strong>✅ Error Highlighting:</strong> Automatic red coloring for traces with errors
-          </ListItem>
-          <ListItem>
-            <strong>✅ Responsive Tooltips:</strong> Shows service, span, time, duration, and error info
-          </ListItem>
-          <ListItem>
-            <strong>✅ chartsTheme Customization:</strong> Color palette, tooltips, grid, thresholds via `generateChartsTheme()`
+            ✅ <strong>link:</strong> string - Click navigation URL with variables (traceId, datasourceName) (optional)
           </ListItem>
         </List>
-        <Content>Customization Limitations:</Content>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>sizeRange: [8, 30] - Point sizes from 8px to 30px diameter</ListItem>
+          <ListItem>link: '/traces/&#123;traceId&#125;?datasource=&#123;datasourceName&#125;' - Navigate to trace details</ListItem>
+        </List>
+        <Content>Built-in Capabilities:</Content>
         <List>
           <ListItem>
-            <strong>🔴 Point Colors:</strong> Hard-coded red for errors, theme default for normal traces
+            ✅ <strong>Error Highlighting:</strong> Automatic red coloring for traces with errors
           </ListItem>
           <ListItem>
-            <strong>🔴 Point Shapes:</strong> Only circles supported, no custom symbols
+            ✅ <strong>Responsive Tooltips:</strong> Shows service, span, time, duration, and error info
           </ListItem>
           <ListItem>
-            <strong>🔴 Axis Styling:</strong> Fixed axis labels and formatting
+            ✅ <strong>Theme Integration:</strong> Uses chartsTheme for default colors and ECharts theme
           </ListItem>
           <ListItem>
-            <strong>🔴 Grid Customization:</strong> Fixed grid spacing and positioning
+            ✅ <strong>Interactive Navigation:</strong> Click-to-navigate with variable substitution
+          </ListItem>
+        </List>
+        <Content>PatternFly Integration Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Color Palette:</strong> Uses chartsTheme.echartsTheme.color[] for point colors
           </ListItem>
           <ListItem>
-            <strong>🔴 Legend Control:</strong> No legend configuration options
+            ✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables
           </ListItem>
           <ListItem>
-            <strong>🔴 Tooltip Styling:</strong> Hard-coded tooltip content and formatting
+            ✅ <strong>Grid & Axes:</strong> PatternFly colors via chartsTheme.echartsTheme.grid
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Tooltip Styling:</strong> Uses chartsTheme.echartsTheme.tooltip configuration
+          </ListItem>
+        </List>
+        <Content>Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Minimal Configuration:</strong> Very limited customization options (only 2 properties)
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Point Colors:</strong> Hard-coded red for errors, theme default for normal traces
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Point Shapes:</strong> Only circles supported, no custom symbols
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Axis Styling:</strong> Fixed axis labels and formatting
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Grid Customization:</strong> Fixed grid spacing and positioning
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Legend Control:</strong> No legend configuration options
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly
           </ListItem>
         </List>
       </Box>

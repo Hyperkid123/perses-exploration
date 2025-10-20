@@ -6,7 +6,7 @@ import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
 import { Box, ListItem } from '@mui/material';
-import { Content, List, Stack, StackItem } from '@patternfly/react-core';
+import { Content, List } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -62,9 +62,18 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'PieChart',
                 spec: {
-                  calculation: 'last',
-                  legend: { placement: 'right' },
-                  value: { placement: 'center' },
+                  calculation: 'last', // 'last', 'mean', 'max', 'min', 'sum'
+                  radius: 80, // Pie chart radius percentage (0-100)
+                  format: {
+                    unit: 'decimal', // Unit formatting
+                    decimalPlaces: 1, // Number precision
+                    shortValues: true, // Use short notation (1k vs 1000)
+                  },
+                  sort: 'desc', // 'asc' or 'desc' for slice ordering
+                  mode: 'value', // 'value' or 'percentage'
+                  legend: {
+                    placement: 'right', // Legend position
+                  },
                 },
               },
             },
@@ -80,44 +89,66 @@ const PersesPieChart = () => {
   return (
     <Box>
       <Box>
-        <Content>Customization issues:</Content>
+        <Content>PieChart Available Configuration Options:</Content>
         <List>
           <ListItem>
-            Height of the graph is directly tied to the number of segments of the data. The more namespaces, the higher the graph will be:{' '}
+            ✅ <strong>calculation:</strong> CalculationType - Data aggregation method (&lsquo;last&rsquo;, &lsquo;mean&rsquo;, &lsquo;max&rsquo;,
+            &lsquo;min&rsquo;, &lsquo;sum&rsquo;)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>radius:</strong> number - Pie chart radius percentage (0-100)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>format:</strong> FormatOptions - Value formatting (unit, decimal places, short values)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>sort:</strong> SortOption - Slice ordering (&lsquo;asc&rsquo; or &lsquo;desc&rsquo;)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>mode:</strong> ModeOption - Display mode (&lsquo;value&rsquo; or &lsquo;percentage&rsquo;)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>legend:</strong> LegendSpecOptions - Legend configuration and placement
+          </ListItem>
+        </List>
+        <Content>Current Configuration:</Content>
+        <List>
+          <ListItem>calculation: &lsquo;last&rsquo;, radius: 80</ListItem>
+          <ListItem>format: {`{ unit: 'decimal', decimalPlaces: 1, shortValues: true }`}</ListItem>
+          <ListItem>sort: &lsquo;desc&rsquo;, mode: &lsquo;value&rsquo;</ListItem>
+          <ListItem>legend: {`{ placement: 'right' }`}</ListItem>
+        </List>
+        <Content>PatternFly Integration Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Color Palette:</strong> Uses chartsTheme.echartsTheme.color[] for slice colors
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Legend Styling:</strong> Configurable legend placement and styling
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Value Formatting:</strong> Comprehensive format options for data display
+          </ListItem>
+        </List>
+        <Content>Known Issues & Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>Dynamic Height:</strong> Height tied to number of data segments - more slices = taller chart{' '}
             <a href='https://github.com/perses/plugins/blob/main/piechart/src/PieChartBase.tsx#L96' target='_blank' rel='noreferrer'>
-              code
+              (see code)
             </a>
           </ListItem>
           <ListItem>
-            <Stack>
-              <StackItem>
-                When hovering on the chart segments, the label does not overflow the paren container, cutting off the text. The component is missing a tooltip
-                configuration:
-              </StackItem>
-              <StackItem>
-                <pre>
-                  {JSON.stringify(
-                    {
-                      tooltip: {
-                        appendToBody: true,
-                        confine: true,
-                        formatter: (params: { name: string; data: number[] }) =>
-                          params.data[1] && `<b>{params.name}</b> &emsp; {formatValue(params.data[1], format)}`,
-                      },
-                    },
-                    null,
-                    2
-                  )}
-                </pre>
-              </StackItem>
-              <StackItem>
-                <p>
-                  <a href='https://github.com/perses/plugins/blob/main/barchart/src/BarChartBase.tsx#L101' target='_blank' rel='noreferrer'>
-                    Refer to bar chart config
-                  </a>
-                </p>
-              </StackItem>
-            </Stack>
+            ❌ <strong>Tooltip Overflow:</strong> Labels get cut off when hovering - missing tooltip configuration
+          </ListItem>
+          <ListItem>
+            ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Container Constraint:</strong> Tooltip confined to parent container bounds
           </ListItem>
         </List>
       </Box>

@@ -62,9 +62,9 @@ const TimeSeries = () => {
               plugin: {
                 kind: 'TimeSeriesTable',
                 spec: {
-                  // TimeSeriesTable has very limited customization options
-                  // Most configuration is handled automatically by the plugin
-                  calculation: 'last', // Only calculation method can be configured
+                  // TimeSeriesTable has NO customization options available
+                  // The TimeSeriesTableOptions interface is completely empty
+                  // All configuration is handled automatically by the plugin
                 },
               },
             },
@@ -87,22 +87,71 @@ const PersesTimeSeriesTable = () => {
         <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
       </Box>
       <Box>
-        <Content>TimeSeriesTable Customization Options:</Content>
+        <Content>TimeSeriesTable Available Configuration Options:</Content>
         <List>
-          <ListItem>✅ Calculation Method: 'last', 'mean', 'max', 'min', etc.</ListItem>
-          <ListItem>✅ Automatic Data Formatting: timestamps and values</ListItem>
-          <ListItem>✅ Series Display Limit: max 1000 series for performance</ListItem>
-          <ListItem>✅ Two-Column Layout: metric names + values</ListItem>
-          <ListItem>✅ Scrollable Container: with MUI table styling</ListItem>
-          <ListItem>✅ Histogram Support: embedded charts and bucket tables</ListItem>
-          <ListItem>❌ Column Configuration: no custom columns</ListItem>
-          <ListItem>❌ Sorting/Filtering: no built-in options</ListItem>
-          <ListItem>❌ Pagination: no pagination controls</ListItem>
-          <ListItem>❌ Column Visibility: no hide/show columns</ListItem>
-          <ListItem>❌ Custom Styling: limited to theme colors</ListItem>
-          <ListItem>❌ Header Customization: uses default MUI headers</ListItem>
-          <ListItem>❌ Row Limits: no configurable row limits</ListItem>
-          <ListItem>⚠️ Very Limited: TimeSeriesTableOptions interface is empty</ListItem>
+          <ListItem>
+            ❌ <strong>NO Configuration Options:</strong> TimeSeriesTableOptions interface is completely empty
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Zero Customization:</strong> All behavior is hard-coded in the plugin
+          </ListItem>
+        </List>
+        <Content>Built-in Fixed Capabilities:</Content>
+        <List>
+          <ListItem>
+            ✅ <strong>Automatic Data Formatting:</strong> Timestamps and values formatted automatically
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Two-Column Layout:</strong> Fixed metric names + values structure
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Scrollable Container:</strong> Uses MUI table with automatic scrolling
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Series Display Limit:</strong> Maximum 1000 series for performance
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Data Aggregation:</strong> Uses last value from time series data
+          </ListItem>
+        </List>
+        <Content>PatternFly Integration Challenges:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>No PatternFly Table:</strong> Uses MUI Table components exclusively
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Fixed Styling:</strong> Cannot replace with PatternFly table styling
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Limited Theme Integration:</strong> Only inherits basic typography via CSS variables
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>MUI Dependency:</strong> Heavily dependent on Material-UI table components
+          </ListItem>
+        </List>
+        <Content>Major Limitations:</Content>
+        <List>
+          <ListItem>
+            ❌ <strong>No Configuration Interface:</strong> Cannot customize any aspect of the table
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Column Configuration:</strong> No custom columns or column visibility controls
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Sorting/Filtering:</strong> No built-in sorting or filtering options
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Pagination:</strong> No pagination controls for large datasets
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Row Limits:</strong> No configurable row limits or virtualization
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Header Customization:</strong> Uses default MUI table headers
+          </ListItem>
+          <ListItem>
+            ❌ <strong>Cell Styling:</strong> No custom cell renderers or styling options
+          </ListItem>
         </List>
       </Box>
       <Box sx={{ height: '400px', width: width === 200 ? '200px' : '100%' }}>
