@@ -3,6 +3,7 @@ import pieChartResponse from './responses/pieChartResponse.json';
 import gaugeChartResponse from './responses/gaugeChartResponse.json';
 import profileQueryResponse from './responses/profileQueryResponse.json';
 import heatmapResponse from './responses/heatmapResponse.json';
+import traceSearchResponse from './responses/traceSearchResponse.json';
 
 export const handlers = [
   http.post('prometheus/api/v1/query_range', async ({ request }) => {
@@ -51,5 +52,22 @@ export const handlers = [
       },
     };
     return HttpResponse.json(mockPyroscopeResponse);
+  }),
+  // Tempo trace search API endpoint
+  http.get('*/api/search', async ({ request }) => {
+    const url = new URL(request.url);
+    const query = url.searchParams.get('q');
+    const start = url.searchParams.get('start');
+    const end = url.searchParams.get('end');
+
+    console.log('Tempo search request to /api/search:', {
+      url: request.url,
+      query,
+      start,
+      end,
+      searchParams: url.searchParams.toString()
+    });
+    console.log('Returning trace data:', traceSearchResponse);
+    return HttpResponse.json(traceSearchResponse);
   }),
 ];

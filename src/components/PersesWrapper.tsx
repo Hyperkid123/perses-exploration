@@ -13,8 +13,52 @@ const persesTimeRange = {
   pastDuration: '1h' as prometheusPlugin.DurationString,
 };
 
-export const muiTheme = getTheme('light');
-export const chartsTheme = generateChartsTheme(muiTheme, {});
+const muiTheme = getTheme('light');
+
+// Custom charts theme with PatternFly colors and enhanced styling
+const chartsTheme = generateChartsTheme(muiTheme, {
+  // Override the default ECharts theme
+  echartsTheme: {
+    // Custom color palette for better visual variety
+    color: [
+      '#06c', // PatternFly primary blue
+      '#3e8635', // PatternFly green
+      '#f0ab00', // PatternFly yellow/orange
+      '#c9190b', // PatternFly red
+      '#8b43d6', // PatternFly purple
+      '#009596', // PatternFly cyan
+      '#d2691e', // Custom orange
+    ],
+    // Tooltip styling
+    tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      borderColor: '#06c',
+      borderWidth: 1,
+      textStyle: {
+        color: '#fff',
+        fontSize: 12,
+      },
+    },
+    // Grid styling
+    grid: {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+      containLabel: true,
+    },
+  },
+  // Custom threshold colors for status indicators
+  thresholds: {
+    defaultColor: '#3e8635', // PatternFly green for success
+    palette: ['#f0ab00', '#fe5d00', '#c9190b'], // PatternFly warning, orange, danger
+  },
+  // Sparkline customization
+  sparkline: {
+    width: 3,
+    color: '#06c', // PatternFly primary blue
+  },
+});
 
 const PersesWidgetWrapper = ({ children }: PropsWithChildren<Record<string, unknown>>) => {
   return (

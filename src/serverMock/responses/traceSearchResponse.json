@@ -1,0 +1,101 @@
+{
+  "traces": [
+    {
+      "traceID": "abc123def456",
+      "rootServiceName": "frontend-service",
+      "rootTraceName": "GET /api/users",
+      "startTimeUnixNano": "1696118400000000000",
+      "durationMs": 245,
+      "serviceStats": {
+        "frontend-service": {
+          "spanCount": 12
+        }
+      }
+    },
+    {
+      "traceID": "def456ghi789",
+      "rootServiceName": "auth-service",
+      "rootTraceName": "POST /auth/login",
+      "startTimeUnixNano": "1696118914286000000",
+      "durationMs": 156,
+      "serviceStats": {
+        "auth-service": {
+          "spanCount": 8
+        }
+      }
+    },
+    {
+      "traceID": "ghi789jkl012",
+      "rootServiceName": "payment-service",
+      "rootTraceName": "POST /payment/process",
+      "startTimeUnixNano": "1696119428571000000",
+      "durationMs": 892,
+      "serviceStats": {
+        "payment-service": {
+          "spanCount": 25,
+          "errorCount": 2
+        }
+      }
+    },
+    {
+      "traceID": "jkl012mno345",
+      "rootServiceName": "inventory-service",
+      "rootTraceName": "GET /inventory/check",
+      "startTimeUnixNano": "1696119942857000000",
+      "durationMs": 78,
+      "serviceStats": {
+        "inventory-service": {
+          "spanCount": 5
+        }
+      }
+    },
+    {
+      "traceID": "mno345pqr678",
+      "rootServiceName": "notification-service",
+      "rootTraceName": "POST /notifications/send",
+      "startTimeUnixNano": "1696120457143000000",
+      "durationMs": 312,
+      "serviceStats": {
+        "notification-service": {
+          "spanCount": 15
+        }
+      }
+    },
+    {
+      "traceID": "pqr678stu901",
+      "rootServiceName": "database-service",
+      "rootTraceName": "SELECT users",
+      "startTimeUnixNano": "1696120971429000000",
+      "durationMs": 450,
+      "serviceStats": {
+        "database-service": {
+          "spanCount": 3
+        }
+      }
+    },
+    {
+      "traceID": "stu901vwx234",
+      "rootServiceName": "cache-service",
+      "rootTraceName": "GET cache:user:123",
+      "startTimeUnixNano": "1696121485714000000",
+      "durationMs": 23,
+      "serviceStats": {
+        "cache-service": {
+          "spanCount": 2
+        }
+      }
+    },
+    {
+      "traceID": "vwx234yzb567",
+      "rootServiceName": "email-service",
+      "rootTraceName": "SEND welcome_email",
+      "startTimeUnixNano": "1696122000000000000",
+      "durationMs": 678,
+      "serviceStats": {
+        "email-service": {
+          "spanCount": 18
+        }
+      }
+    }
+  ]
+}
