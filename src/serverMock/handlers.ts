@@ -4,6 +4,7 @@ import gaugeChartResponse from './responses/gaugeChartResponse.json';
 import profileQueryResponse from './responses/profileQueryResponse.json';
 import heatmapResponse from './responses/heatmapResponse.json';
 import traceSearchResponse from './responses/traceSearchResponse.json';
+import statChartResponse from './responses/statChartResponse.json';
 
 export const handlers = [
   http.post('prometheus/api/v1/query_range', async ({ request }) => {
@@ -20,6 +21,9 @@ export const handlers = [
     } else if (query === 'histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))') {
       console.log('Returning heatmap histogram response');
       return HttpResponse.json(heatmapResponse);
+    } else if (query === 'avg(cpu_usage_percent) by (service)') {
+      console.log('Returning stat chart response');
+      return HttpResponse.json(statChartResponse);
     }
 
     // fallback to time series query
