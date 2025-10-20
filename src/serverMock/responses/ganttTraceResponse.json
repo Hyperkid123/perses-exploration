@@ -1,0 +1,182 @@
+{
+  "batches": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "frontend-service"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "frontend-service"
+          },
+          "spans": [
+            {
+              "traceId": "abc123def456",
+              "spanId": "span1001",
+              "parentSpanId": "",
+              "name": "HTTP GET /api/users",
+              "startTimeUnixNano": "1696118400000000000",
+              "endTimeUnixNano": "1696118400250000000",
+              "attributes": [
+                {
+                  "key": "http.method",
+                  "value": {
+                    "stringValue": "GET"
+                  }
+                },
+                {
+                  "key": "http.url",
+                  "value": {
+                    "stringValue": "/api/users"
+                  }
+                },
+                {
+                  "key": "http.status_code",
+                  "value": {
+                    "intValue": "200"
+                  }
+                }
+              ],
+              "status": {
+                "code": "STATUS_CODE_OK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "auth-service"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "auth-service"
+          },
+          "spans": [
+            {
+              "traceId": "abc123def456",
+              "spanId": "span1003",
+              "parentSpanId": "span1001",
+              "name": "auth check",
+              "startTimeUnixNano": "1696118400020000000",
+              "endTimeUnixNano": "1696118400050000000",
+              "attributes": [
+                {
+                  "key": "auth.user_id",
+                  "value": {
+                    "stringValue": "user123"
+                  }
+                }
+              ],
+              "status": {
+                "code": "STATUS_CODE_OK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "database-service"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "database-service"
+          },
+          "spans": [
+            {
+              "traceId": "abc123def456",
+              "spanId": "span1002",
+              "parentSpanId": "span1001",
+              "name": "database query",
+              "startTimeUnixNano": "1696118400050000000",
+              "endTimeUnixNano": "1696118400230000000",
+              "attributes": [
+                {
+                  "key": "db.statement",
+                  "value": {
+                    "stringValue": "SELECT * FROM users WHERE active = true"
+                  }
+                },
+                {
+                  "key": "db.type",
+                  "value": {
+                    "stringValue": "postgresql"
+                  }
+                }
+              ],
+              "status": {
+                "code": "STATUS_CODE_OK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "cache-service"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "cache-service"
+          },
+          "spans": [
+            {
+              "traceId": "abc123def456",
+              "spanId": "span1004",
+              "parentSpanId": "span1002",
+              "name": "cache lookup",
+              "startTimeUnixNano": "1696118400060000000",
+              "endTimeUnixNano": "1696118400075000000",
+              "attributes": [
+                {
+                  "key": "cache.hit",
+                  "value": {
+                    "stringValue": "false"
+                  }
+                }
+              ],
+              "status": {
+                "code": "STATUS_CODE_OK"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

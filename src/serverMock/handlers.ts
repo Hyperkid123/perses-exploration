@@ -8,6 +8,7 @@ import statChartResponse from './responses/statChartResponse.json';
 import statusHistoryResponse from './responses/statusHistoryResponse.json';
 import timeSeriesResponse from './responses/timeSeriesResponse.json';
 import timeSeriesTableResponse from './responses/timeSeriesTableResponse.json';
+import ganttTraceResponse from './responses/ganttTraceResponse.json';
 
 export const handlers = [
   http.post('prometheus/api/v1/query_range', async ({ request }) => {
@@ -83,7 +84,21 @@ export const handlers = [
       end,
       searchParams: url.searchParams.toString()
     });
+
+    // Check if this is a Gantt chart query - return trace data directly
+    if (query === 'trace_gantt{service.name=~".*"}') {
+      console.log('Returning gantt trace data for search:', ganttTraceResponse);
+      return HttpResponse.json(ganttTraceResponse);
+    }
+
     console.log('Returning trace data:', traceSearchResponse);
     return HttpResponse.json(traceSearchResponse);
+  }),
+  // Tempo trace detail API endpoint for Gantt chart
+  http.get('*/prometheus/api/traces/:traceId', async ({ params }) => {
+    const { traceId } = params;
+    console.log('Tempo trace detail request for trace ID:', traceId);
+    console.log('Returning gantt trace detail:', ganttTraceResponse);
+    return HttpResponse.json(ganttTraceResponse);
   }),
 ];
