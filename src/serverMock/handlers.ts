@@ -7,6 +7,7 @@ import traceSearchResponse from './responses/traceSearchResponse.json';
 import statChartResponse from './responses/statChartResponse.json';
 import statusHistoryResponse from './responses/statusHistoryResponse.json';
 import timeSeriesResponse from './responses/timeSeriesResponse.json';
+import timeSeriesTableResponse from './responses/timeSeriesTableResponse.json';
 
 export const handlers = [
   http.post('prometheus/api/v1/query_range', async ({ request }) => {
@@ -32,6 +33,9 @@ export const handlers = [
     } else if (query === 'cpu_usage{namespace=~".*"}') {
       console.log('Returning time series response');
       return HttpResponse.json(timeSeriesResponse);
+    } else if (query === 'cpu_usage_table{namespace=~".*"}') {
+      console.log('Returning time series table response');
+      return HttpResponse.json(timeSeriesTableResponse);
     }
 
     // fallback to time series query
