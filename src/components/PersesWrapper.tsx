@@ -72,7 +72,7 @@ const chartsTheme = generateChartsTheme(muiTheme, {
     palette: [
       '#f0ab00', // PatternFly --pf-t--global--color--warning--default
       '#ec7a08', // PatternFly --pf-t--global--color--orange--default
-      '#c9190b'  // PatternFly --pf-t--global--color--danger--default
+      '#c9190b', // PatternFly --pf-t--global--color--danger--default
     ],
   },
   // Sparkline customization matching PatternFly tokens

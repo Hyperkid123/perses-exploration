@@ -37,7 +37,7 @@ const Layout = ({
   onLayoutChange,
 }: PropsWithChildren<{
   layout: (LayoutDef & { C: ComponentType })[];
-  onLayoutChange: (newLayout: LayoutDef[]) => void;
+  onLayoutChange: (newLayout: (LayoutDef & { C: ComponentType })[]) => void;
 }>) => {
   const { width, ref } = useResizeObserver();
 
