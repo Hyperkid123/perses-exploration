@@ -20,7 +20,7 @@ const WidgetCard = ({ title, sections, children }: WidgetCardProps) => {
       <CardHeader style={{ flexShrink: 0 }}>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardBody style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px', overflow: 'hidden' }}>
+      <CardBody style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 'var(--pf-t--global--spacer--md)', overflow: 'hidden' }}>
         <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsMd' }} style={{ height: '100%' }}>
           <FlexItem style={{ flexShrink: 0 }}>
             <Accordion isBordered>

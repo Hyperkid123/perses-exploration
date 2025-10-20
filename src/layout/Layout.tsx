@@ -10,18 +10,19 @@ const ItemWrapper = ({ children }: PropsWithChildren) => {
         className='custom-drag-handle'
         style={{
           position: 'absolute',
-          top: 4,
-          right: 4,
+          top: 'var(--pf-t--global--spacer--xs)',
+          right: 'var(--pf-t--global--spacer--xs)',
           zIndex: 1000,
           cursor: 'move',
-          background: 'var(--pf-global--primary-color--100)',
-          padding: '6px 10px',
-          borderRadius: '6px',
-          fontSize: '11px',
-          fontWeight: 'bold',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+          background: 'var(--pf-t--global--color--brand--default)',
+          padding: 'var(--pf-t--global--spacer--xs) var(--pf-t--global--spacer--sm)',
+          borderRadius: 'var(--pf-t--global--border--radius--100)',
+          fontSize: 'var(--pf-t--global--font--size--body--sm)',
+          fontWeight: 'var(--pf-t--global--font--weight--body--bold)',
+          boxShadow: 'var(--pf-t--global--box-shadow--sm)',
           userSelect: 'none',
-          border: '1px solid var(--pf-global--primary-color--200)',
+          border: `1px solid var(--pf-t--global--color--brand--200)`,
+          color: 'var(--pf-t--global--text--color--on-brand)',
         }}
       >
         ⋮⋮ DRAG

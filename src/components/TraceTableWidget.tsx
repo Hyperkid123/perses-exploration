@@ -13,32 +13,32 @@ const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
 const query = '{service.name=~".*service"} | avg(duration) > 100ms';
 
-// Basic MUI theme without PatternFly CSS variables to avoid conflicts
+// Basic MUI theme using PatternFly-aligned colors to avoid conflicts
 const basicTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
+      main: '#0066cc', // PatternFly brand blue equivalent
     },
     secondary: {
-      main: '#dc004e',
+      main: '#c9190b', // PatternFly danger red equivalent
     },
     background: {
-      default: '#ffffff',
-      paper: '#ffffff',
+      default: '#fafafa', // PatternFly background-100 equivalent
+      paper: '#ffffff', // PatternFly background white
     },
     text: {
-      primary: '#000000',
-      secondary: '#666666',
+      primary: '#151515', // PatternFly text regular equivalent
+      secondary: '#6a6e73', // PatternFly text subtle equivalent
     },
   },
   components: {
-    // Ensure DataGrid uses standard colors
+    // Ensure DataGrid uses PatternFly-aligned colors
     MuiTableCell: {
       styleOverrides: {
         root: {
           backgroundColor: '#ffffff',
-          borderBottom: '1px solid #e0e0e0',
+          borderBottom: '1px solid #d2d2d2', // PatternFly border-100 equivalent
         },
       },
     },
