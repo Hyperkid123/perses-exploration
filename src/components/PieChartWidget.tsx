@@ -5,8 +5,8 @@ import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@per
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -86,10 +86,12 @@ const TimeSeries = () => {
 
 const PersesPieChart = () => {
   const timeRange = useTimeRange();
-  return (
-    <Box>
-      <Box>
-        <Content>PieChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>calculation:</strong> CalculationType - Data aggregation method (&lsquo;last&rsquo;, &lsquo;mean&rsquo;, &lsquo;max&rsquo;,
@@ -110,15 +112,18 @@ const PersesPieChart = () => {
           <ListItem>
             ✅ <strong>legend:</strong> LegendSpecOptions - Legend configuration and placement
           </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> calculation: &lsquo;last&rsquo;, radius: 80, format:{' '}
+            {`{ unit: 'decimal', decimalPlaces: 1, shortValues: true }`}, sort: &lsquo;desc&rsquo;, mode: &lsquo;value&rsquo;, legend:{' '}
+            {`{ placement: 'right' }`}
+          </ListItem>
         </List>
-        <Content>Current Configuration:</Content>
-        <List>
-          <ListItem>calculation: &lsquo;last&rsquo;, radius: 80</ListItem>
-          <ListItem>format: {`{ unit: 'decimal', decimalPlaces: 1, shortValues: true }`}</ListItem>
-          <ListItem>sort: &lsquo;desc&rsquo;, mode: &lsquo;value&rsquo;</ListItem>
-          <ListItem>legend: {`{ placement: 'right' }`}</ListItem>
-        </List>
-        <Content>PatternFly Integration Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Color Palette:</strong> Uses chartsTheme.echartsTheme.color[] for slice colors
@@ -133,7 +138,12 @@ const PersesPieChart = () => {
             ✅ <strong>Value Formatting:</strong> Comprehensive format options for data display
           </ListItem>
         </List>
-        <Content>Known Issues & Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>Dynamic Height:</strong> Height tied to number of data segments - more slices = taller chart{' '}
@@ -151,15 +161,18 @@ const PersesPieChart = () => {
             ⚠️ <strong>Container Constraint:</strong> Tooltip confined to parent container bounds
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: '400px' }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='PieChart Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

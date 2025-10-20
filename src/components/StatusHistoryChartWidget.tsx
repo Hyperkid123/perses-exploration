@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -83,18 +83,13 @@ const TimeSeries = () => {
 };
 
 const PersesStatusHistoryChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>StatusHistoryChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>legend:</strong> LegendSpecOptions (optional) - Legend configuration and placement
@@ -102,14 +97,17 @@ const PersesStatusHistoryChart = () => {
           <ListItem>
             ✅ <strong>mappings:</strong> ValueMapping[] (optional) - Maps values to text labels and colors
           </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> legend: {`{ placement: 'bottom' }`}, mappings: Value-based mapping (0 → Down/Red, 1 → Up/Green), query:
+            &apos;up{`{job=~".*"}`}&apos; - Service availability metric
+          </ListItem>
         </List>
-        <Content>Current Configuration:</Content>
-        <List>
-          <ListItem>legend: {`{ placement: 'bottom' }`}</ListItem>
-          <ListItem>mappings: Value-based mapping (0 → Down/Red, 1 → Up/Green)</ListItem>
-          <ListItem>query: &apos;up{`{job=~".*"}`}&apos; - Service availability metric</ListItem>
-        </List>
-        <Content>Built-in Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'capabilities',
+      title: 'Built-in Capabilities',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Service Monitoring:</strong> Shows service availability over time as grid heatmap
@@ -124,7 +122,12 @@ const PersesStatusHistoryChart = () => {
             ✅ <strong>Interactive Tooltips:</strong> Shows timestamp and status details on hover
           </ListItem>
         </List>
-        <Content>PatternFly Integration Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Status Colors:</strong> Uses PatternFly semantic colors (success green, danger red)
@@ -139,7 +142,12 @@ const PersesStatusHistoryChart = () => {
             ✅ <strong>Theme Integration:</strong> Uses chartsTheme for overall styling
           </ListItem>
         </List>
-        <Content>Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>Minimal Configuration:</strong> Very limited customization options (only 2 properties)
@@ -157,15 +165,18 @@ const PersesStatusHistoryChart = () => {
             ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='StatusHistoryChart Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box } from '@mui/material';
-import { Content, List, Switch, ListItem } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -80,18 +80,13 @@ const TimeSeries = () => {
 };
 
 const PersesHeatMapChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>HeatMapChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>yAxisFormat:</strong> FormatOptions - Y-axis value formatting (unit, decimal places)
@@ -102,14 +97,33 @@ const PersesHeatMapChart = () => {
           <ListItem>
             ✅ <strong>showVisualMap:</strong> boolean - Toggle color scale legend visibility
           </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> yAxisFormat: {`{ unit: 'decimal' }`}, countFormat: {`{ unit: 'decimal' }`}, showVisualMap: true
+          </ListItem>
         </List>
-        <Content>Current Configuration:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
-          <ListItem>yAxisFormat: {`{ unit: 'decimal' }`}</ListItem>
-          <ListItem>countFormat: {`{ unit: 'decimal' }`}</ListItem>
-          <ListItem>showVisualMap: true</ListItem>
+          <ListItem>
+            ⚠️ <strong>Theme Integration:</strong> Limited to chartsTheme.echartsTheme configuration
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Container Styling:</strong> Apply PF styles to wrapper components
+          </ListItem>
+          <ListItem>
+            ⚠️ <strong>Font Integration:</strong> Uses PatternFly fonts via CSS variables
+          </ListItem>
         </List>
-        <Content>PatternFly Integration Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>Color Scheme:</strong> Hard-coded blue→yellow→red gradient (not PF colors)
@@ -133,27 +147,18 @@ const PersesHeatMapChart = () => {
             ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables for colors
           </ListItem>
         </List>
-        <Content>Potential PatternFly Workarounds:</Content>
-        <List>
-          <ListItem>
-            ⚠️ <strong>Theme Integration:</strong> Limited to chartsTheme.echartsTheme configuration
-          </ListItem>
-          <ListItem>
-            ⚠️ <strong>Container Styling:</strong> Apply PF styles to wrapper components
-          </ListItem>
-          <ListItem>
-            ⚠️ <strong>Font Integration:</strong> Uses PatternFly fonts via CSS variables
-          </ListItem>
-        </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='HeatMapChart Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

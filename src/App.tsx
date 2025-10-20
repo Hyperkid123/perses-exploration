@@ -1,6 +1,7 @@
 import '@patternfly/react-core/dist/styles/base.css';
+import { Layout as LayoutDef } from 'react-grid-layout';
 import { ThemeProvider } from '@mui/material';
-import { Content, Grid, GridItem } from '@patternfly/react-core';
+import { Content } from '@patternfly/react-core';
 import PersesPieChart from './components/PieChartWidget';
 import { usePatternFlyTheme } from './hooks/usePatternflyTheme';
 import PersesBarChart from './components/BarChartWidget';
@@ -17,9 +18,124 @@ import PersesTimeSeriesChart from './components/TimeSeriesChartWidget';
 import PersesTimeSeriesTable from './components/TimeSeriesTableWidget';
 import PersesTraceTable from './components/TraceTableWidget';
 import PersesTracingGanttChart from './components/TracingGanttChartWidget';
+import Layout from './layout/Layout';
+import { ComponentType, useState } from 'react';
+
+import 'react-grid-layout/css/styles.css';
 
 function App() {
   const theme = usePatternFlyTheme();
+  const [layout, setLayout] = useState<(LayoutDef & { C: ComponentType })[]>([
+    {
+      i: 'PersesBarChart',
+      x: 0,
+      y: 0,
+      w: 6,
+      h: 5,
+      C: PersesBarChart,
+    },
+    {
+      i: 'PersesFlameChart',
+      x: 6,
+      y: 0,
+      w: 6,
+      h: 5,
+      C: PersesFlameChart,
+    },
+    {
+      i: 'PersesGaugeChart',
+      x: 0,
+      y: 5,
+      w: 6,
+      h: 5,
+      C: PersesGaugeChart,
+    },
+    {
+      i: 'PersesHeatMapChart',
+      x: 6,
+      y: 5,
+      w: 6,
+      h: 5,
+      C: PersesHeatMapChart,
+    },
+    {
+      i: 'PersesHistogramChart',
+      x: 0,
+      y: 10,
+      w: 6,
+      h: 5,
+      C: PersesHistogramChart,
+    },
+    {
+      i: 'PersesPieChart',
+      x: 6,
+      y: 10,
+      w: 6,
+      h: 5,
+      C: PersesPieChart,
+    },
+    {
+      i: 'PersesScatterChart',
+      x: 0,
+      y: 15,
+      w: 6,
+      h: 5,
+      C: PersesScatterChart,
+    },
+    {
+      i: 'PersesStatChart',
+      x: 6,
+      y: 15,
+      w: 6,
+      h: 5,
+      C: PersesStatChart,
+    },
+    {
+      i: 'PersesStatusHistoryChart',
+      x: 0,
+      y: 20,
+      w: 6,
+      h: 5,
+      C: PersesStatusHistoryChart,
+    },
+    {
+      i: 'PersesTimeSeriesChart',
+      x: 6,
+      y: 20,
+      w: 6,
+      h: 5,
+      C: PersesTimeSeriesChart,
+    },
+    {
+      i: 'PersesTimeSeriesTable',
+      x: 0,
+      y: 25,
+      w: 6,
+      h: 5,
+      C: PersesTimeSeriesTable,
+    },
+    {
+      i: 'PersesTraceTable',
+      x: 6,
+      y: 25,
+      w: 6,
+      h: 5,
+      C: PersesTraceTable,
+    },
+    {
+      i: 'PersesTracingGanttChart',
+      x: 0,
+      y: 30,
+      w: 6,
+      h: 5,
+      C: PersesTracingGanttChart,
+    },
+  ]);
+
+  const handleLayoutChange = (newLayout: (LayoutDef & { C: ComponentType })[]) => {
+    setLayout(newLayout);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <PluginRegistry
@@ -43,47 +159,7 @@ function App() {
           </Content>
         </div>
         <div>
-          <Grid hasGutter>
-            <GridItem span={3}>
-              <PersesBarChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesFlameChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesGaugeChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesHeatMapChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesHistogramChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesPieChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesScatterChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesStatChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesStatusHistoryChart />
-            </GridItem>
-            <GridItem span={3}>
-              <PersesTimeSeriesChart />
-            </GridItem>
-            <GridItem span={6}>
-              <PersesTimeSeriesTable />
-            </GridItem>
-            <GridItem span={6}>
-              <PersesTraceTable />
-            </GridItem>
-            <GridItem span={6}>
-              <PersesTracingGanttChart />
-            </GridItem>
-          </Grid>
+          <Layout layout={layout} onLayoutChange={handleLayoutChange} />
         </div>
       </PluginRegistry>
     </ThemeProvider>

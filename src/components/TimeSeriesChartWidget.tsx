@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -96,18 +96,13 @@ const TimeSeries = () => {
 };
 
 const PersesTimeSeriesChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>TimeSeriesChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>legend:</strong> LegendSpecOptions (optional) - Legend configuration and placement
@@ -128,7 +123,12 @@ const PersesTimeSeriesChart = () => {
             ✅ <strong>querySettings:</strong> QuerySettingsOptions[] (optional) - Per-query styling
           </ListItem>
         </List>
-        <Content>Visual Options (visual property):</Content>
+      ),
+    },
+    {
+      id: 'visual',
+      title: 'Visual Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>display:</strong> &lsquo;line&rsquo; or &lsquo;bar&rsquo; - Chart display type
@@ -157,15 +157,17 @@ const PersesTimeSeriesChart = () => {
           <ListItem>
             ✅ <strong>palette:</strong> Color palette configuration (auto/categorical)
           </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> line chart with 2px solid lines, 0.1 area opacity, 3px points, yAxis: visible with &lsquo;CPU Usage
+            (%)&rsquo; label, tooltip: pinning enabled, legend: placed on the right
+          </ListItem>
         </List>
-        <Content>Current Configuration:</Content>
-        <List>
-          <ListItem>visual: line chart with 2px solid lines, 0.1 area opacity, 3px points</ListItem>
-          <ListItem>yAxis: visible with &lsquo;CPU Usage (%)&rsquo; label</ListItem>
-          <ListItem>tooltip: pinning enabled</ListItem>
-          <ListItem>legend: placed on the right</ListItem>
-        </List>
-        <Content>PatternFly Integration Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Color Palette:</strong> Uses chartsTheme.echartsTheme.color[] for line colors
@@ -180,7 +182,12 @@ const PersesTimeSeriesChart = () => {
             ✅ <strong>Per-Query Styling:</strong> Individual color and style settings per series
           </ListItem>
         </List>
-        <Content>Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes
@@ -192,15 +199,18 @@ const PersesTimeSeriesChart = () => {
             ❌ <strong>Custom Animations:</strong> No animation configuration options
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='TimeSeriesChart Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

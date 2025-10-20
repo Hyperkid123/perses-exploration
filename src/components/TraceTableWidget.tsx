@@ -1,12 +1,13 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_TEMPO } from '@perses-dev/tempo-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem, ThemeProvider, createTheme } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -115,18 +116,13 @@ const TimeSeries = () => {
 };
 
 const PersesTraceTable = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>TraceTable Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>visual:</strong> TraceTableVisualOptions (optional) - Visual customization options
@@ -134,28 +130,23 @@ const PersesTraceTable = () => {
           <ListItem>
             ✅ <strong>links:</strong> TraceTableCustomLinks (optional) - Custom link configuration
           </ListItem>
-        </List>
-        <Content>Visual Options (visual property):</Content>
-        <List>
           <ListItem>
-            ✅ <strong>palette:</strong> TraceTablePaletteOptions - Color palette configuration (&lsquo;auto&rsquo; or &lsquo;categorical&rsquo;)
+            ✅ <strong>visual.palette:</strong> TraceTablePaletteOptions - Color palette configuration (&lsquo;auto&rsquo; or &lsquo;categorical&rsquo;)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>links.trace:</strong> string - Custom trace link template with variables (traceId, datasourceName)
+          </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> visual.palette.mode: &lsquo;categorical&rsquo;, links.trace: &lsquo;/traces/{`{traceId}`}?datasource=
+            {`{datasourceName}`}&rsquo;, query: &lsquo;{`{service.name=~".*service"}`} | avg(duration) &gt; 100ms&rsquo;
           </ListItem>
         </List>
-        <Content>Link Options (links property):</Content>
-        <List>
-          <ListItem>
-            ✅ <strong>trace:</strong> string - Custom trace link template with variables (traceId, datasourceName)
-          </ListItem>
-        </List>
-        <Content>Current Configuration:</Content>
-        <List>
-          <ListItem>visual.palette.mode: &lsquo;categorical&rsquo;</ListItem>
-          <ListItem>
-            links.trace: &lsquo;/traces/{`{traceId}`}?datasource={`{datasourceName}`}&rsquo;
-          </ListItem>
-          <ListItem>query: &lsquo;{`{service.name=~".*service"}`} | avg(duration) &gt; 100ms&rsquo;</ListItem>
-        </List>
-        <Content>Built-in Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'capabilities',
+      title: 'Built-in Capabilities',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>DataGrid Display:</strong> Uses MUI DataGrid for tabular trace display
@@ -170,7 +161,12 @@ const PersesTraceTable = () => {
             ✅ <strong>Color Coding:</strong> Configurable color palette for trace visualization
           </ListItem>
         </List>
-        <Content>PatternFly Integration Challenges:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>MUI DataGrid Dependency:</strong> Uses MUI DataGrid exclusively, cannot use PatternFly tables
@@ -185,7 +181,12 @@ const PersesTraceTable = () => {
             ⚠️ <strong>Limited Theme Integration:</strong> Basic theme isolation with createTheme override
           </ListItem>
         </List>
-        <Content>Major Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>Column Configuration:</strong> No custom column controls or visibility options
@@ -206,15 +207,18 @@ const PersesTraceTable = () => {
             ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables due to theme isolation
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: width === 200 ? '200px' : '100%' }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='TraceTable Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

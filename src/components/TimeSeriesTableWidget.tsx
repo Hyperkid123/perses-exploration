@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -76,18 +76,13 @@ const TimeSeries = () => {
 };
 
 const PersesTimeSeriesTable = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>TimeSeriesTable Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>NO Configuration Options:</strong> TimeSeriesTableOptions interface is completely empty
@@ -96,7 +91,12 @@ const PersesTimeSeriesTable = () => {
             ❌ <strong>Zero Customization:</strong> All behavior is hard-coded in the plugin
           </ListItem>
         </List>
-        <Content>Built-in Fixed Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'capabilities',
+      title: 'Built-in Capabilities',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Automatic Data Formatting:</strong> Timestamps and values formatted automatically
@@ -114,7 +114,12 @@ const PersesTimeSeriesTable = () => {
             ✅ <strong>Data Aggregation:</strong> Uses last value from time series data
           </ListItem>
         </List>
-        <Content>PatternFly Integration Challenges:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>No PatternFly Table:</strong> Uses MUI Table components exclusively
@@ -129,7 +134,12 @@ const PersesTimeSeriesTable = () => {
             ⚠️ <strong>MUI Dependency:</strong> Heavily dependent on Material-UI table components
           </ListItem>
         </List>
-        <Content>Major Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>No Configuration Interface:</strong> Cannot customize any aspect of the table
@@ -153,15 +163,18 @@ const PersesTimeSeriesTable = () => {
             ❌ <strong>Cell Styling:</strong> No custom cell renderers or styling options
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: width === 200 ? '200px' : '100%' }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='TimeSeriesTable Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

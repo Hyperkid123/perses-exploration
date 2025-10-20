@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_TEMPO } from '@perses-dev/tempo-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -75,18 +75,13 @@ const TimeSeries = () => {
 };
 
 const PersesScatterChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>ScatterChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>sizeRange:</strong> [number, number] - Circle diameter range [min, max] pixels (optional)
@@ -94,13 +89,16 @@ const PersesScatterChart = () => {
           <ListItem>
             ✅ <strong>link:</strong> string - Click navigation URL with variables (traceId, datasourceName) (optional)
           </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> sizeRange: [8, 30], link: &lsquo;/traces/&#123;traceId&#125;?datasource=&#123;datasourceName&#125;&rsquo;
+          </ListItem>
         </List>
-        <Content>Current Configuration:</Content>
-        <List>
-          <ListItem>sizeRange: [8, 30] - Point sizes from 8px to 30px diameter</ListItem>
-          <ListItem>link: '/traces/&#123;traceId&#125;?datasource=&#123;datasourceName&#125;' - Navigate to trace details</ListItem>
-        </List>
-        <Content>Built-in Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'capabilities',
+      title: 'Built-in Capabilities',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Error Highlighting:</strong> Automatic red coloring for traces with errors
@@ -115,7 +113,12 @@ const PersesScatterChart = () => {
             ✅ <strong>Interactive Navigation:</strong> Click-to-navigate with variable substitution
           </ListItem>
         </List>
-        <Content>PatternFly Integration Capabilities:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Color Palette:</strong> Uses chartsTheme.echartsTheme.color[] for point colors
@@ -130,7 +133,12 @@ const PersesScatterChart = () => {
             ✅ <strong>Tooltip Styling:</strong> Uses chartsTheme.echartsTheme.tooltip configuration
           </ListItem>
         </List>
-        <Content>Limitations:</Content>
+      ),
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>Minimal Configuration:</strong> Very limited customization options (only 2 properties)
@@ -154,15 +162,18 @@ const PersesScatterChart = () => {
             ❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='ScatterChart Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

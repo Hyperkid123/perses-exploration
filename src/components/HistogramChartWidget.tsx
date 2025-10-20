@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box } from '@mui/material';
-import { Content, List, Switch, ListItem } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -88,18 +88,13 @@ const TimeSeries = () => {
 };
 
 const PersesHistogramChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>HistogramChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>format:</strong> FormatOptions - Value formatting (unit, decimal places, short values)
@@ -113,14 +108,16 @@ const PersesHistogramChart = () => {
           <ListItem>
             ✅ <strong>thresholds:</strong> ThresholdOptions - Color-coded value ranges with custom colors
           </ListItem>
+          <ListItem>
+            ✅ <strong>Current Configuration:</strong> format: {`{ unit: 'decimal', decimalPlaces: 0, shortValues: true }`}, min: 0, max: 10, thresholds: PatternFly color scheme (blue, green, yellow, red)
+          </ListItem>
         </List>
-        <Content>Current Configuration:</Content>
-        <List>
-          <ListItem>format: {`{ unit: 'decimal', decimalPlaces: 0, shortValues: true }`}</ListItem>
-          <ListItem>min: 0, max: 10</ListItem>
-          <ListItem>thresholds: PatternFly color scheme (blue, green, yellow, red)</ListItem>
-        </List>
-        <Content>PatternFly Integration Capabilities:</Content>
+      )
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>Color Palette:</strong> Full control over threshold colors using PatternFly hex codes
@@ -135,7 +132,12 @@ const PersesHistogramChart = () => {
             ✅ <strong>Range Control:</strong> Configurable min/max values for histogram buckets
           </ListItem>
         </List>
-        <Content>Known Issues & Limitations:</Content>
+      )
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>
             ❌ <strong>Tooltip Overflow:</strong> Labels get cut off when hovering on chart segments - missing tooltip configuration
@@ -153,15 +155,18 @@ const PersesHistogramChart = () => {
             ⚠️ <strong>Tooltip Styling:</strong> Basic tooltip styling (not PatternFly-styled)
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      )
+    }
+  ];
+
+  return (
+    <WidgetCard title="HistogramChart Widget" sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

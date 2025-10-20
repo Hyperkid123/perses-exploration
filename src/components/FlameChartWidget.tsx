@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PYROSCOPE } from '@perses-dev/pyroscope-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -81,18 +81,13 @@ const TimeSeries = () => {
 };
 
 const PersesFlameChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>FlameChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>
             ✅ <strong>palette:</strong> &lsquo;package-name&rsquo; | &lsquo;value&rsquo; - Color scheme for flame graph
@@ -113,8 +108,16 @@ const PersesFlameChart = () => {
             ✅ <strong>traceHeight:</strong> number (optional) - Custom height for trace visualization
           </ListItem>
         </List>
-        <Content>PatternFly Integration Challenges:</Content>
+      ),
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
+          <ListItem>
+            ⚠️ <strong>Theme Integration:</strong> Limited to overall container theming
+          </ListItem>
           <ListItem>
             ❌ <strong>Composite Components:</strong> Limited customization of internal table/graph pieces
           </ListItem>
@@ -124,19 +127,19 @@ const PersesFlameChart = () => {
           <ListItem>
             ❌ <strong>CSS Override Requirement:</strong> Would need brittle CSS rules for PF styling
           </ListItem>
-          <ListItem>
-            ⚠️ <strong>Theme Integration:</strong> Limited to overall container theming
-          </ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      ),
+    },
+  ];
+
+  return (
+    <WidgetCard title='FlameChart Widget' sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 

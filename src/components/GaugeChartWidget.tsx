@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AbsoluteTimeRange, RelativeTimeRange, TimeRangeValue } from '@perses-dev/core';
 import { Panel } from '@perses-dev/dashboards';
 import { DataQueriesProvider, TimeRangeProvider, useSuggestedStepMs } from '@perses-dev/plugin-system';
 import { DEFAULT_PROM } from '@perses-dev/prometheus-plugin';
 import useResizeObserver from 'use-resize-observer';
 import PersesWidgetWrapper from './PersesWrapper';
-import { Box, ListItem } from '@mui/material';
-import { Content, List, Switch } from '@patternfly/react-core';
+import WidgetCard from './WidgetCard';
+import { List, ListItem } from '@patternfly/react-core';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
@@ -91,18 +91,13 @@ const TimeSeries = () => {
 };
 
 const PersesGaugeChart = () => {
-  const [width, setWidth] = useState<number>(400);
   const timeRange = useTimeRange();
-  function toggleWidth() {
-    setWidth((prevWidth) => (prevWidth === 400 ? 200 : 400));
-  }
-  return (
-    <Box>
-      <Box>
-        <Switch checked={width === 200} onChange={toggleWidth} label='Toggle Width' />
-      </Box>
-      <Box>
-        <Content>GaugeChart Available Configuration Options:</Content>
+
+  const sections = [
+    {
+      id: 'customization',
+      title: 'Customization Options',
+      content: (
         <List>
           <ListItem>✅ <strong>calculation:</strong> &lsquo;last&rsquo;, &lsquo;mean&rsquo;, &lsquo;max&rsquo;, &lsquo;min&rsquo;, &lsquo;sum&rsquo; - Data aggregation method</ListItem>
           <ListItem>✅ <strong>max:</strong> number - Maximum value for gauge scale (default: 100)</ListItem>
@@ -110,28 +105,37 @@ const PersesGaugeChart = () => {
           <ListItem>✅ <strong>thresholds:</strong> Color-coded value ranges with custom colors</ListItem>
           <ListItem>✅ <strong>legend:</strong> Show/hide legend display</ListItem>
         </List>
-        <Content>PatternFly Integration Capabilities:</Content>
+      )
+    },
+    {
+      id: 'patternfly',
+      title: 'PatternFly Integration',
+      content: (
         <List>
           <ListItem>✅ <strong>Color Palette:</strong> Full control over threshold colors using PatternFly palette</ListItem>
           <ListItem>✅ <strong>Typography:</strong> Inherits PatternFly fonts via CSS variables</ListItem>
           <ListItem>✅ <strong>Theme Integration:</strong> Uses chartsTheme.echartsTheme.gauge for styling</ListItem>
           <ListItem>✅ <strong>Threshold Styling:</strong> PatternFly semantic colors (success, warning, danger)</ListItem>
+          <ListItem>✅ <strong>Current Configuration:</strong> Default: #3e8635 (success green), 60%+: #06c (primary blue), 75%+: #f0ab00 (warning yellow), 90%+: #c9190b (danger red)</ListItem>
         </List>
-        <Content>Current PatternFly Configuration:</Content>
-        <List>
-          <ListItem>Default: #3e8635 (PatternFly success green)</ListItem>
-          <ListItem>60%+: #06c (PatternFly primary blue)</ListItem>
-          <ListItem>75%+: #f0ab00 (PatternFly warning yellow)</ListItem>
-          <ListItem>90%+: #c9190b (PatternFly danger red)</ListItem>
-        </List>
-        <Content>Advanced PatternFly Styling via ChartsTheme:</Content>
+      )
+    },
+    {
+      id: 'advanced',
+      title: 'Advanced Styling',
+      content: (
         <List>
           <ListItem>✅ <strong>Gauge Appearance:</strong> Configure via chartsTheme.echartsTheme.gauge</ListItem>
           <ListItem>✅ <strong>Arc Styling:</strong> Custom arc width, colors, and gradients</ListItem>
           <ListItem>✅ <strong>Pointer Styling:</strong> Custom needle/pointer appearance</ListItem>
           <ListItem>✅ <strong>Label Formatting:</strong> Custom text styling and positioning</ListItem>
         </List>
-        <Content>Limitations:</Content>
+      )
+    },
+    {
+      id: 'limitations',
+      title: 'Limitations',
+      content: (
         <List>
           <ListItem>❌ <strong>CSS Variables:</strong> Cannot use PatternFly CSS variables directly - requires hex codes</ListItem>
           <ListItem>❌ <strong>Inner Shape Styling:</strong> Limited access to internal SVG elements</ListItem>
@@ -139,15 +143,18 @@ const PersesGaugeChart = () => {
           <ListItem>❌ <strong>Custom Tick Marks:</strong> Limited tick customization options</ListItem>
           <ListItem>⚠️ <strong>Theme Sync:</strong> Colors must be manually updated when PatternFly theme changes</ListItem>
         </List>
-      </Box>
-      <Box sx={{ height: '400px', width: `${width}px` }}>
-        <PersesWidgetWrapper>
-          <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
-            <TimeSeries />
-          </TimeRangeProvider>
-        </PersesWidgetWrapper>
-      </Box>
-    </Box>
+      )
+    }
+  ];
+
+  return (
+    <WidgetCard title="GaugeChart Widget" sections={sections}>
+      <PersesWidgetWrapper>
+        <TimeRangeProvider timeRange={timeRange} refreshInterval='0s'>
+          <TimeSeries />
+        </TimeRangeProvider>
+      </PersesWidgetWrapper>
+    </WidgetCard>
   );
 };
 
