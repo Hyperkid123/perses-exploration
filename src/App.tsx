@@ -1,7 +1,9 @@
 import '@patternfly/react-core/dist/styles/base.css';
 import { Layout as LayoutDef } from 'react-grid-layout';
-import { ThemeProvider } from '@mui/material';
-import { Content } from '@patternfly/react-core';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { Content, Flex, FlexItem } from '@patternfly/react-core';
+import { ThemeProvider } from './hooks/useTheme';
+import ThemeToggle from './components/ThemeToggle';
 import PersesPieChart from './components/PieChartWidget';
 import { usePatternFlyTheme } from './hooks/usePatternflyTheme';
 import PersesBarChart from './components/BarChartWidget';
@@ -137,31 +139,42 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <PluginRegistry
-        pluginLoader={pluginLoader}
-        defaultPluginKinds={{
-          Panel: 'TimeSeriesChart',
-          TimeSeriesQuery: 'PrometheusTimeSeriesQuery',
-        }}
-      >
-        <div>
-          <Content>
-            Checking plugins used in the{' '}
-            <a
-              href='https://github.com/openshift/monitoring-plugin/blob/main/web/src/components/dashboards/perses/persesPluginsLoader.tsx'
-              target='_blank'
-              rel='noreferrer'
-            >
-              monitoring plugin in OCP
-            </a>
-            .
-          </Content>
-        </div>
-        <div>
-          <Layout layout={layout} onLayoutChange={handleLayoutChange} />
-        </div>
-      </PluginRegistry>
+    <ThemeProvider>
+      <MuiThemeProvider theme={theme}>
+        <PluginRegistry
+          pluginLoader={pluginLoader}
+          defaultPluginKinds={{
+            Panel: 'TimeSeriesChart',
+            TimeSeriesQuery: 'PrometheusTimeSeriesQuery',
+          }}
+        >
+          <Flex direction={{ default: 'column' }} spaceItems={{ default: 'spaceItemsMd' }}>
+            <FlexItem>
+              <Flex justifyContent={{ default: 'justifyContentSpaceBetween' }} alignItems={{ default: 'alignItemsCenter' }}>
+                <FlexItem>
+                  <Content>
+                    Checking plugins used in the{' '}
+                    <a
+                      href='https://github.com/openshift/monitoring-plugin/blob/main/web/src/components/dashboards/perses/persesPluginsLoader.tsx'
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      monitoring plugin in OCP
+                    </a>
+                    .
+                  </Content>
+                </FlexItem>
+                <FlexItem>
+                  <ThemeToggle />
+                </FlexItem>
+              </Flex>
+            </FlexItem>
+            <FlexItem>
+              <Layout layout={layout} onLayoutChange={handleLayoutChange} />
+            </FlexItem>
+          </Flex>
+        </PluginRegistry>
+      </MuiThemeProvider>
     </ThemeProvider>
   );
 }

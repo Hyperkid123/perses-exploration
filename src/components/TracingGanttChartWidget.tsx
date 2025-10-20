@@ -8,42 +8,48 @@ import PersesWidgetWrapper from './PersesWrapper';
 import WidgetCard from './WidgetCard';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { List, ListItem } from '@patternfly/react-core';
+import { useTheme } from '../hooks/useTheme';
 
 const start = '2023-10-01T00:00:00Z';
 const end = '2023-10-01T01:00:00Z';
 const query = 'abc123def456'; // Direct trace ID to get data.trace instead of data.searchResult
 
-// Basic MUI theme using PatternFly-aligned colors to avoid conflicts
-const basicTheme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#0066cc', // PatternFly brand blue equivalent
+// Function to create theme-aware MUI theme for Perses compatibility
+const createBasicTheme = (theme: 'light' | 'dark') => {
+  const isDark = theme === 'dark';
+
+  return createTheme({
+    palette: {
+      mode: theme,
+      primary: {
+        main: '#0066cc', // PatternFly brand blue equivalent
+      },
+      secondary: {
+        main: '#c9190b', // PatternFly danger red equivalent
+      },
+      background: {
+        default: isDark ? '#1f1f1f' : '#fafafa', // PatternFly background
+        paper: isDark ? '#2a2a2a' : '#ffffff', // PatternFly background white/dark
+      },
+      text: {
+        primary: isDark ? '#ffffff' : '#151515', // PatternFly text regular
+        secondary: isDark ? '#c7c7c7' : '#6a6e73', // PatternFly text subtle
+      },
     },
-    secondary: {
-      main: '#c9190b', // PatternFly danger red equivalent
-    },
-    background: {
-      default: '#fafafa', // PatternFly background-100 equivalent
-      paper: '#ffffff', // PatternFly background white
-    },
-    text: {
-      primary: '#151515', // PatternFly text regular equivalent
-      secondary: '#6a6e73', // PatternFly text subtle equivalent
-    },
-  },
-  components: {
-    // Ensure DataGrid uses PatternFly-aligned colors
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #d2d2d2', // PatternFly border-100 equivalent
+    components: {
+      // Ensure DataGrid uses PatternFly-aligned colors
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            backgroundColor: isDark ? '#2a2a2a' : '#ffffff',
+            borderBottom: isDark ? '1px solid #4a4a4a' : '1px solid #d2d2d2',
+            color: isDark ? '#ffffff' : '#151515',
+          },
         },
       },
     },
-  },
-});
+  });
+};
 
 const useTimeRange = () => {
   const result = useMemo(() => {
@@ -62,6 +68,8 @@ const useTimeRange = () => {
 };
 
 const TimeSeries = () => {
+  const { theme } = useTheme();
+  const basicTheme = createBasicTheme(theme);
   const datasource = DEFAULT_TEMPO;
   const panelRef = useRef<HTMLDivElement>(null);
   const { width } = useResizeObserver({ ref: panelRef });
